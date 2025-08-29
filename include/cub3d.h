@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/08/24 18:23:26 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/08/29 13:03:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@
 
 # define TILE_SIZE 64
 
-typedef struct s_rgb
+typedef struct	s_malloc
+{
+	void				*ptr;
+	struct s_malloc		*next;
+}	t_malloc;
+
+typedef struct	s_rgb
 {
 	int r;
 	int g;
@@ -31,7 +37,7 @@ typedef struct s_rgb
 	int value; // armazenar (r << 16 | g << 8 | b)
 }	t_rgb;
 
-typedef struct s_texture
+typedef struct	s_texture
 {
 	char	*path;
 	void	*img;
@@ -43,14 +49,14 @@ typedef struct s_texture
 	int		endian;
 }	t_texture;
 
-typedef struct s_map
+typedef struct	s_map
 {
 	char	**grid;     // mapa em matriz
 	int		width;      // largura do mapa
 	int		height;     // altura do mapa
 }	t_map;
 
-typedef struct s_player
+typedef struct	s_player
 {
 	double	x;
 	double	y;
@@ -60,21 +66,39 @@ typedef struct s_player
 	double	plane_y;
 }	t_player;
 
-typedef struct s_game
+typedef struct s_parse
+{
+	int		fd;
+	int		line_number;
+	int		elements_found; // bitmask para verificar elementos
+	int		map_started;
+}	t_parse;
+
+typedef struct	s_game
 {
 	void		*mlx;
 	void		*win;
 
 	t_map		map;
 	t_player	player;
-
 	t_texture	no_tex;
 	t_texture	so_tex;
 	t_texture	we_tex;
 	t_texture	ea_tex;
-
 	t_rgb		floor;
 	t_rgb		ceiling;
+	t_parse		parse;
 }	t_game;
+
+// Garbage Collector
+void	*ft_malloc(size_t size);
+void	ft_gc_free_all(void);
+void	ft_gc_exit(int status);
+void	ft_free(void *ptr);
+
+
+
+
+
 
 #endif

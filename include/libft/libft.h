@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 09:51:04 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/08/24 18:08:25 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/08/29 12:50:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+# ifndef FD_LEN
+#  define FD_LEN 42
+# endif
 
 # include <stdlib.h>
 # include <stdarg.h>
@@ -31,10 +39,13 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 void	*ft_memcpy(void *dest, const void *src, size_t count);
 void	*ft_memmove(void *dest, const void *src, size_t n);
 void	*ft_memset(void *dest, int value, size_t size);
+char	*get_next_line(int fd);
+char	*get_next_line_bonus(int fd);
 int		print_base(long long n, char *base, int div);
 int		print_str(char *str);
 int		print_char(char c);
 int		print_point(unsigned long p);
+int		ft_printf(const char *str, ...);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
