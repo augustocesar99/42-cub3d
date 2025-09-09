@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/08/29 13:03:33 by marvin           ###   ########.fr       */
+/*   Updated: 2025/09/09 16:21:03 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -20,8 +20,18 @@
 # include <math.h>
 # include "mlx.h"
 # include "libft.h"
+# include <stdbool.h>
 
 # define TILE_SIZE 64
+# define	WIDTH 1200
+# define	HEIGHT 800
+//keyhooks
+# define	W 119
+# define	A 97
+# define	S 115
+# define	D 100
+# define	pi 3.14159265359
+# define	ESC 65307
 
 typedef struct	s_malloc
 {
@@ -60,6 +70,12 @@ typedef struct	s_player
 {
 	double	x;
 	double	y;
+	bool	key_up;
+	bool	key_down;
+	bool	key_right;
+	bool	key_left;
+	bool	key_esc;
+	
 	double	dir_x;       // direção (vetor)
 	double	dir_y;
 	double	plane_x;    // plano da câmera (para FOV)
@@ -78,16 +94,20 @@ typedef struct	s_game
 {
 	void		*mlx;
 	void		*win;
-
+	void		*img;
+	char		*address;
+	int			bpp;
+	int			size_line;
+	int			endian;
 	t_map		map;
 	t_player	player;
-	t_texture	no_tex;
-	t_texture	so_tex;
-	t_texture	we_tex;
-	t_texture	ea_tex;
-	t_rgb		floor;
-	t_rgb		ceiling;
-	t_parse		parse;
+	// t_texture	no_tex;
+	// t_texture	so_tex;
+	// t_texture	we_tex;
+	// t_texture	ea_tex;
+	// t_rgb		floor;
+	// t_rgb		ceiling;
+	// t_parse		parse;
 }	t_game;
 
 // Garbage Collector
@@ -96,8 +116,12 @@ void	ft_gc_free_all(void);
 void	ft_gc_exit(int status);
 void	ft_free(void *ptr);
 
-
-
+//init.c
+void	init_game(t_game *env);
+void	init_player(t_player *player);
+void    move_player(t_player *player);
+int 	key_release(int keycode, t_game *env);
+int 	key_press(int keycode, t_game *env);
 
 
 
