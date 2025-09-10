@@ -6,7 +6,7 @@
 /*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/09/09 16:21:03 by ekeller-         ###   ########.fr       */
+/*   Updated: 2025/09/10 17:27:56 by ekeller-         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -23,15 +23,17 @@
 # include <stdbool.h>
 
 # define TILE_SIZE 64
-# define	WIDTH 1200
-# define	HEIGHT 800
+# define	WIDTH 1280
+# define	HEIGHT 720
 //keyhooks
 # define	W 119
 # define	A 97
 # define	S 115
 # define	D 100
-# define	pi 3.14159265359
+# define	PI 3.14159265359
 # define	ESC 65307
+# define	LEFT 65361
+# define	RIGHT 65363
 
 typedef struct	s_malloc
 {
@@ -70,12 +72,15 @@ typedef struct	s_player
 {
 	double	x;
 	double	y;
+	double	angle;
 	bool	key_up;
 	bool	key_down;
 	bool	key_right;
 	bool	key_left;
 	bool	key_esc;
-	
+	bool	left_rotate;
+	bool	right_rotate;
+
 	double	dir_x;       // direção (vetor)
 	double	dir_y;
 	double	plane_x;    // plano da câmera (para FOV)
@@ -119,9 +124,21 @@ void	ft_free(void *ptr);
 //init.c
 void	init_game(t_game *env);
 void	init_player(t_player *player);
-void    move_player(t_player *player);
+void    clear_image(t_game * env);
+int		close_win(t_game *env);
+
+
+//hooks.c
 int 	key_release(int keycode, t_game *env);
 int 	key_press(int keycode, t_game *env);
+
+//draw.c
+void    put_pixel(int x, int y, int color, t_game *env);
+void    draw_square(int x, int y, int size, int color, t_game * env);
+void    move_player(t_player *player);
+void    draw_map(t_game * env);
+int		draw_loop(t_game *env);
+char    **get_map(void);
 
 
 
