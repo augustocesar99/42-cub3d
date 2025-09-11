@@ -43,48 +43,53 @@ void    draw_square(int x, int y, int size, int color, t_game * env)
     }
 }
 
-void    move_player(t_player *player)
+void    move_player(t_game *env)
 {
-    int speed;
-    double angle_speed;
     double  cos_angle;
     double  sin_angle;
+	float	old_x;
+	float	old_y;
 
+	old_x = env->player.x;
+	old_y = env->player.y;
+    if (env->player.left_rotate)
+        env->player.angle -= ANGLE_SPEED;
+    if (env->player.right_rotate)
+        env->player.angle += ANGLE_SPEED;
+    if (env->player.angle > 2 * PI)
+        env->player.angle = 0;
+    if (env->player.angle < 0)
+        env->player.angle = 2 * PI;
+    
+	cos_angle = cos(env->player.angle);
+    sin_angle = sin(env->player.angle);
+    
+    if (env->player.key_up)
+    {
+        env->player.x += cos_angle * SPEED;
+        env->player.y -= sin_angle * SPEED;
+    }
+    if (env->player.key_down)
+    {
+        env->player.x -= cos_angle * SPEED;
+        env->player.y += sin_angle * SPEED;
+    }
+    if (env->player.key_left)
+    {
+        env->player.x -= sin_angle * SPEED;
+        env->player.y -= cos_angle * SPEED;
+    }
+    if (env->player.key_right)
+    {
+        env->player.x += sin_angle * SPEED;
+        env->player.y += cos_angle * SPEED;
+    }
+	if (touch(env->player.x, env->player.y, env))
+    {
+        env->player.x = old_x;
+        env->player.y = old_y;
+    }
 
-    cos_angle = cos(player->angle);
-    sin_angle = sin(player->angle);
-    angle_speed = 0.1;
-    speed = 3;
-    if (player->left_rotate)
-        player->angle -= angle_speed;
-    if (player->right_rotate)
-        player->angle += angle_speed;
-    if (player->angle > 2 * PI)
-        player->angle = 0;
-    if (player->angle < 0)
-        player->angle = 2 * PI;
-    
-    
-    if (player->key_up)
-    {
-        player->x += cos_angle * speed;
-        player->y += sin_angle * speed;
-    }
-    if (player->key_down)
-    {
-        player->x -= cos_angle * speed;
-        player->y += sin_angle * speed;
-    }
-    if (player->key_left)
-    {
-        player->x += cos_angle * speed;
-        player->y -= sin_angle * speed;
-    }
-    if (player->key_right)
-    {
-        player->x += cos_angle * speed;
-        player->y += sin_angle * speed;
-    }
 }
 
 void    draw_map(t_game * env)
@@ -111,23 +116,91 @@ void    draw_map(t_game * env)
     }
 
 }
+bool    touch(float px, float py, t_game *env)
+{
+    int x;
+    int y;
+	int	rows;
+
+	rows = 0;
+    x = px / TILE_SIZE;
+    y = py / TILE_SIZE;
+	if (y < 0 || x < 0)
+		return (true);
+	while (env->map.grid[rows])
+		rows++;
+	if (y >= rows)
+		return (true);
+	if (env->map.grid[y] == NULL)
+		return (true);
+	if (x > (int) ft_strlen(env->map.grid[y]))
+		return (true);
+    if (env->map.grid[y][x] == '1')
+        return (true);
+    return (false);
+}
+
+float	distance(float x, float y)
+{
+	return (sqrt(x * x + y * y));
+}
+
+void draw_line(t_game *env, float start_x, int i)
+{
+	float	ray_x;
+	float	ray_y;
+
+	
+	ray_x = env->player.x;
+	ray_y = env->player.y;
+	while (!touch(ray_x, ray_y, env))
+	{
+		//put_pixel((int)ray_x, (int)ray_y, 0xFF0000, env);
+		ray_x += cos(start_x);
+		ray_y += sin(start_x);
+	}
+	float	dist = distance(ray_x - env->player.x, ray_y - env->player.y);
+	float	height = (TILE_SIZE / dist) * WIDTH / 2;
+	int		start_y = (HEIGHT - height) / 2;
+	int		end = start_y + height;
+	while(start_y < end)
+	{
+		put_pixel(i, start_y, 255, env);
+		start_y++;
+	}
+
+}
 
 int draw_loop(t_game *env)
 {
     float       ray_x;
     float       ray_y;
+	float		fraction;
+	float		start_x;
+	int			i;
 
-
+    fraction = PI / 3 / WIDTH;
+	start_x = env->player.angle - PI / 6;
+	i = 0;
+	move_player(env);
+    clear_image(env);
     ray_x = env->player.x;
     ray_y = env->player.y;
-    
-
-
-    move_player(&env->player);
-    clear_image(env);
-    draw_square(env->player.x, env->player.y, 50, 0x00FF00, env);
-    draw_map(env);
-
+	while (!touch(ray_x, ray_y, env))
+	{
+		//put_pixel((int)ray_x, (int)ray_y, 0xFF0000, env);
+		ray_x += cos(env->player.angle);
+		ray_y += sin(env->player.angle);
+	}
+    //draw_square(env->player.x, env->player.y, 10, 0x00FF00, env);
+    //draw_map(env);
+	while (i < WIDTH)
+	{
+		draw_line(env, start_x, i);
+		start_x += fraction;
+		i++;
+	}
+		
 
 
     mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
@@ -143,10 +216,10 @@ char    **get_map(void)
     map[0] = "1111111111111";
     map[1] = "1010000000001";
     map[2] = "1010000000001";
-    map[3] = "1000000000001";
+    map[3] = "1000010000001";
     map[4] = "1000000000001";
     map[5] = "1000000000001";
-    map[6] = "1000000000001";
+    map[6] = "1000100000001";
     map[7] = "1000000000001";
     map[8] = "1111111111111";
     map[9] = NULL;

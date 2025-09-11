@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/09/10 17:27:56 by ekeller-         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:41:24 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -34,6 +34,8 @@
 # define	ESC 65307
 # define	LEFT 65361
 # define	RIGHT 65363
+# define	SPEED 1
+# define	ANGLE_SPEED 0.03
 
 typedef struct	s_malloc
 {
@@ -135,10 +137,11 @@ int 	key_press(int keycode, t_game *env);
 //draw.c
 void    put_pixel(int x, int y, int color, t_game *env);
 void    draw_square(int x, int y, int size, int color, t_game * env);
-void    move_player(t_player *player);
+void    move_player(t_game *env);
 void    draw_map(t_game * env);
 int		draw_loop(t_game *env);
 char    **get_map(void);
+bool    touch(float px, float py, t_game *env);
 
 
 
