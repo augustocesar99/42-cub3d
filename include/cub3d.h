@@ -6,7 +6,7 @@
 /*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/09/11 18:41:24 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/09/12 15:59:17 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,17 @@ typedef struct	s_game
 	// t_parse		parse;
 }	t_game;
 
+typedef struct	s_minimap
+{
+	void		*mlx;
+	void		*win;
+	void		*img;
+	char		*address;
+	int			bpp;
+	int			size_line;
+	int			endian;
+}	t_minimap;
+
 // Garbage Collector
 void	*ft_malloc(size_t size);
 void	ft_gc_free_all(void);
@@ -136,13 +147,17 @@ int 	key_press(int keycode, t_game *env);
 
 //draw.c
 void    put_pixel(int x, int y, int color, t_game *env);
-void    draw_square(int x, int y, int size, int color, t_game * env);
 void    move_player(t_game *env);
-void    draw_map(t_game * env);
 int		draw_loop(t_game *env);
 char    **get_map(void);
 bool    touch(float px, float py, t_game *env);
 
 
+//minimap.c
+void    draw_square(int x, int y, int size, int color, t_minimap *minimap);
+void    draw_map(t_game *env, t_minimap *minimap);
+void	build_minimap(t_game *env, t_minimap *minimap);
+void    put_pixel_minimap(int x, int y, int color, t_minimap *env);
+void	init_minimap(t_minimap	*minimap, t_game *env);
 
 #endif

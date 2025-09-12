@@ -2,46 +2,16 @@
 
 void    put_pixel(int x, int y, int color, t_game *env)
 {
-
     char	*pxl;
 
-	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
-	{
-		pxl = env->address +(y * env->size_line
-				+ x * (env->bpp / 8));
-		*(unsigned int *)pxl = color;
-	}
-}
-
-void    draw_square(int x, int y, int size, int color, t_game * env)
-{
-    int i;
-
-    i = 0;
-    while (i < size)
+    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
     {
-        put_pixel(x + i, y, color, env);
-        i++;
-    }
-    i = 0;
-    while (i < size)
-    {
-        put_pixel(x, y + i, color, env);
-        i++;
-    }
-    i = 0;
-    while (i < size)
-    {
-        put_pixel(x + size, y + i, color, env);
-        i++;
-    }
-    i = 0;
-    while (i < size)
-    {
-        put_pixel(x + i, y + size, color, env);
-        i++;
+    	pxl = env->address +(y * env->size_line
+    		+ x * (env->bpp / 8));
+    	*(unsigned int *)pxl = color;
     }
 }
+
 
 void    move_player(t_game *env)
 {
@@ -67,21 +37,21 @@ void    move_player(t_game *env)
     if (env->player.key_up)
     {
         env->player.x += cos_angle * SPEED;
-        env->player.y -= sin_angle * SPEED;
+        env->player.y += sin_angle * SPEED;
     }
     if (env->player.key_down)
     {
         env->player.x -= cos_angle * SPEED;
-        env->player.y += sin_angle * SPEED;
+        env->player.y -= sin_angle * SPEED;
     }
     if (env->player.key_left)
     {
-        env->player.x -= sin_angle * SPEED;
+        env->player.x += sin_angle * SPEED;
         env->player.y -= cos_angle * SPEED;
     }
     if (env->player.key_right)
     {
-        env->player.x += sin_angle * SPEED;
+        env->player.x -= sin_angle * SPEED;
         env->player.y += cos_angle * SPEED;
     }
 	if (touch(env->player.x, env->player.y, env))
@@ -92,30 +62,7 @@ void    move_player(t_game *env)
 
 }
 
-void    draw_map(t_game * env)
-{
-    char    **map;
-    int     color;
-    int     y;
-    int     x;
 
-    y = 0;
-    x = 0;
-    map = env->map.grid;
-    color = 0x0000FF;
-    while (map[y])
-    {
-        x = 0;
-        while(map[y][x])
-        {
-            if (map[y][x] == '1')
-                draw_square(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, color, env);
-            x++;
-        }
-        y++;
-    }
-
-}
 bool    touch(float px, float py, t_game *env)
 {
     int x;
@@ -178,6 +125,7 @@ int draw_loop(t_game *env)
 	float		fraction;
 	float		start_x;
 	int			i;
+    // t_minimap      minimap;
 
     fraction = PI / 3 / WIDTH;
 	start_x = env->player.angle - PI / 6;
@@ -186,24 +134,16 @@ int draw_loop(t_game *env)
     clear_image(env);
     ray_x = env->player.x;
     ray_y = env->player.y;
-	while (!touch(ray_x, ray_y, env))
-	{
-		//put_pixel((int)ray_x, (int)ray_y, 0xFF0000, env);
-		ray_x += cos(env->player.angle);
-		ray_y += sin(env->player.angle);
-	}
-    //draw_square(env->player.x, env->player.y, 10, 0x00FF00, env);
-    //draw_map(env);
+	// init_minimap(&minimap, env);
+    // build_minimap(env, &minimap);
 	while (i < WIDTH)
 	{
 		draw_line(env, start_x, i);
 		start_x += fraction;
 		i++;
 	}
-		
-
-
     mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
+	//mlx_put_image_to_window(minimap.mlx, minimap.win, minimap.img, 10, 10);
     return (0);
 
 }
