@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/09/12 15:59:17 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/09/23 17:38:56 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -22,6 +22,7 @@
 # include "libft.h"
 # include <stdbool.h>
 
+//64
 # define TILE_SIZE 64
 # define	WIDTH 1280
 # define	HEIGHT 720
@@ -34,8 +35,9 @@
 # define	ESC 65307
 # define	LEFT 65361
 # define	RIGHT 65363
-# define	SPEED 1
-# define	ANGLE_SPEED 0.03
+# define	SPEED 3
+# define	ANGLE_SPEED 0.06
+# define	DIRECTION_FACE  N
 
 typedef struct	s_malloc
 {
@@ -50,6 +52,7 @@ typedef struct	s_rgb
 	int b;
 	int value; // armazenar (r << 16 | g << 8 | b)
 }	t_rgb;
+
 
 typedef struct	s_texture
 {

@@ -15,7 +15,8 @@ void    init_player(t_player *player)
 {
     player->x = WIDTH / 2;
     player->y = HEIGHT / 2;
-    player->angle = PI / 2;
+    //n=3*PI/2, s=PI/2, east=0, west=PI
+    player->angle = PI;
     
     player->key_down = false;
     player->key_up = false;

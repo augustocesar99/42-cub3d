@@ -74,10 +74,10 @@ bool    touch(float px, float py, t_game *env)
     y = py / TILE_SIZE;
 	if (y < 0 || x < 0)
 		return (true);
-	while (env->map.grid[rows])
-		rows++;
-	if (y >= rows)
-		return (true);
+	// while (env->map.grid[rows])
+	// 	rows++;
+	// if (y >= rows)
+	// 	return (true);
 	if (env->map.grid[y] == NULL)
 		return (true);
 	if (x > (int) ft_strlen(env->map.grid[y]))
@@ -107,12 +107,24 @@ void draw_line(t_game *env, float start_x, int i)
 		ray_y += sin(start_x);
 	}
 	float	dist = distance(ray_x - env->player.x, ray_y - env->player.y);
-	float	height = (TILE_SIZE / dist) * WIDTH / 2;
-	int		start_y = (HEIGHT - height) / 2;
-	int		end = start_y + height;
+    float   corrected = dist * cosf(start_x - env->player.angle);
+    if (corrected < 0.001)
+        corrected = 0.001;
+    float plane = WIDTH / 2 / tanf(PI/3.0 *0.5);
+    float line_h = (int)((float)TILE_SIZE * plane / corrected);
+    int start_y = (HEIGHT - line_h) / 2;
+    if (start_y < 0)
+        start_y = 0;
+    int end = start_y + line_h;
+    if (end > HEIGHT)
+        end = HEIGHT;
+
+	// float	height = (TILE_SIZE / dist) * WIDTH / 2;
+	// int		start_y = (HEIGHT - height) / 2;
+	// int		end = start_y + height;
 	while(start_y < end)
 	{
-		put_pixel(i, start_y, 255, env);
+		put_pixel(i, start_y, 0x00AAFF, env);
 		start_y++;
 	}
 
