@@ -3,25 +3,34 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+         #
+#    By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/24 18:23:17 by acesar-m          #+#    #+#              #
-#    Updated: 2025/09/12 14:23:20 by ekeller-@st      ###   ########.fr        #
+#    Updated: 2025/09/27 18:30:05 by acesar-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= cub3D
 
 CC			= cc
-CFLAGS		= -I include -I $(MLX_DIR) -I $(LIBFT_DIR)
-# 	 -Wall -Wextra -Werror 
+CFLAGS		= -I include -I $(MLX_DIR) -I $(LIBFT_DIR) -g -Wall -Wextra -Werror 
 
 SRC_DIR		= src
 OBJ_DIR		= obj
 
-SRC			= main.c init.c gc.c hooks.c draw.c minimap.c
+SRC			= 	main.c \
+				init.c \
+				hooks.c \
+				draw.c \
+				minimap.c \
+				error/error.c \
+				gc/gc.c \
+				parser/parcer.c \
+				parser/parse_config.c \
+				parser/parse_map.c
 
-OBJ			= $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
+SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
+OBJS		= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 LIBFT_DIR	= include/libft
 LIBFT		= $(LIBFT_DIR)/libft.a
@@ -31,15 +40,12 @@ MLX			= $(MLX_DIR)/libmlx.a
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT) $(MLX)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx -lm -lXext -lX11
+$(NAME): $(OBJS) $(LIBFT) $(MLX)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx -lm -lXext -lX11
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)

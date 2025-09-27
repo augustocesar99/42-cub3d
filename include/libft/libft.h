@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 09:51:04 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/08/29 12:50:18 by marvin           ###   ########.fr       */
+/*   Updated: 2025/09/27 15:48:08 by acesar-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <stdarg.h>
 # include <unistd.h>
 
-int		ft_atoi(const char *str);
+long	ft_atol(const char *str);
 void	ft_bzero(void *s, size_t size);
 void	*ft_calloc(size_t num, size_t size);
 int		ft_isalnum(int c);

@@ -12,7 +12,6 @@ void    put_pixel(int x, int y, int color, t_game *env)
     }
 }
 
-
 void    move_player(t_game *env)
 {
     double  cos_angle;
@@ -61,7 +60,6 @@ void    move_player(t_game *env)
     }
 
 }
-
 
 bool    touch(float px, float py, t_game *env)
 {

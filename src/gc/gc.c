@@ -74,6 +74,22 @@ void	ft_gc_free_all(void)
 	*gc = NULL;
 }
 
+void	ft_free_split(char **split)
+{
+	int	i;
+
+	if (!split)
+		return ;
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
+
 void	ft_gc_exit(int status)
 {
 	ft_gc_free_all();
