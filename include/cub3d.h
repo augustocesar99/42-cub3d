@@ -6,7 +6,7 @@
 /*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/09/27 18:24:40 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/10/04 17:20:57 by acesar-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <math.h>
 # include "mlx.h"
 # include "libft.h"
-# include <stdbool.h>
 
 // Configurações de tela e tiles
 # define TILE_SIZE 64
@@ -50,6 +49,12 @@
 # define COLOR_F 0x10
 # define COLOR_C 0x20
 # define ALL_ELEMENTS 0x3F
+
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}	t_bool;
 
 // Garbage Collector
 typedef struct s_malloc
@@ -99,13 +104,13 @@ typedef struct	s_player
 	double	x;
 	double	y;
 	double	angle;
-	bool	key_up;
-	bool	key_down;
-	bool	key_right;
-	bool	key_left;
-	bool	key_esc;
-	bool	left_rotate;
-	bool	right_rotate;
+	t_bool	key_up;
+	t_bool	key_down;
+	t_bool	key_right;
+	t_bool	key_left;
+	t_bool	key_esc;
+	t_bool	left_rotate;
+	t_bool	right_rotate;
 
 	double	dir_x;
 	double	dir_y;
@@ -184,7 +189,7 @@ void	put_pixel(int x, int y, int color, t_game *game);
 void	move_player(t_game *game);
 int		draw_loop(t_game *game);
 char	**get_map(void);
-bool	touch(float px, float py, t_game *game);
+t_bool	touch(float px, float py, t_game *game);
 
 // minimap.c
 void	draw_square(int x, int y, int size, int color, t_minimap *minimap);

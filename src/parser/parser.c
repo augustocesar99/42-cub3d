@@ -11,7 +11,7 @@ static void process_line(t_game *game, char *line)
 	while (*line && (*line == ' ' || *line == '\t'))
 		line++;
 
-	if (ft_strlen(line) == 0)
+	if (ft_strlen(line) == 0 || (*line == '\n' && ft_strlen(line) == 1))
 		return;
 
 	if (game->parse.elements_found != ALL_ELEMENTS)

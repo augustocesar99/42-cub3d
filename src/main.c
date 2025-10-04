@@ -6,29 +6,29 @@ static void	init_parse_data(t_game *game)
 	game->parse.fd = -1;
 }
 
-int close_win(t_game *env)
-{
-	if (env->mlx)
-	{
-		if (env->img)
-			mlx_destroy_image(env->mlx, env->img);
+// int close_win(t_game *env)
+// {
+// 	if (env->mlx)
+// 	{
+// 		if (env->img)
+// 			mlx_destroy_image(env->mlx, env->img);
 
-		if (env->no_tex.img)
-			mlx_destroy_image(env->mlx, env->no_tex.img);
-		if (env->so_tex.img)
-			mlx_destroy_image(env->mlx, env->so_tex.img);
-		if (env->we_tex.img)
-			mlx_destroy_image(env->mlx, env->we_tex.img);
-		if (env->ea_tex.img)
-			mlx_destroy_image(env->mlx, env->ea_tex.img);
+// 		if (env->no_tex.img)
+// 			mlx_destroy_image(env->mlx, env->no_tex.img);
+// 		if (env->so_tex.img)
+// 			mlx_destroy_image(env->mlx, env->so_tex.img);
+// 		if (env->we_tex.img)
+// 			mlx_destroy_image(env->mlx, env->we_tex.img);
+// 		if (env->ea_tex.img)
+// 			mlx_destroy_image(env->mlx, env->ea_tex.img);
 
-		if (env->win)
-			mlx_destroy_window(env->mlx, env->win);
-	}
+// 		if (env->win)
+// 			mlx_destroy_window(env->mlx, env->win);
+// 	}
 
-	ft_gc_exit(EXIT_SUCCESS);
-	return (0);
-}
+// 	ft_gc_exit(EXIT_SUCCESS);
+// 	return (0);
+// }
 
 int main(int argc, char **argv)
 {

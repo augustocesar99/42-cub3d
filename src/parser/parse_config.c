@@ -13,6 +13,7 @@ static void	parse_rgb(t_game *game, char *str, t_rgb *color_struct)
 	int		i;
 	long	val;
 
+	(void)game;
 	rgb_values = ft_split(str, ',');
 	if (!rgb_values)
 		ft_error("Erro de alocação ao processar cor RGB.");
@@ -50,24 +51,30 @@ static void	parse_rgb(t_game *game, char *str, t_rgb *color_struct)
 static void	parse_texture_path(t_game *game, char *line, t_texture *tex_struct)
 {
 	char *path_end;
+	char *temp;
 
+	(void)game;
 	path_end = skip_spaces(line);
 	if (*path_end == '\0')
 		ft_error("Caminho da textura vazio.");
 
-	while (*line)
-		line++;
-	line--;
-	while (*line == ' ' || *line == '\t')
-		*line-- = '\0';
-
-	tex_struct->path = ft_strdup(path_end);
-	if (!tex_struct->path)
+	temp = ft_strdup(path_end);
+	if (!temp)
 		ft_error("Erro de alocação para o caminho da textura.");
+
+	int len = ft_strlen(temp);
+	while (len > 0 && (temp[len-1] == ' ' || temp[len-1] == '\t'))
+	{
+		temp[len-1] = '\0';
+		len--;
+	}
+
+	tex_struct->path = temp;
 }
 
 static void	set_element_bit(t_game *game, int mask, char *identifier)
 {
+	(void)identifier;
 	if (game->parse.elements_found & mask)
 		ft_error("Elemento de configuração duplicado.");
 	game->parse.elements_found |= mask;

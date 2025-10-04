@@ -6,7 +6,7 @@
 #    By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/24 18:23:17 by acesar-m          #+#    #+#              #
-#    Updated: 2025/09/27 18:30:05 by acesar-m         ###   ########.fr        #
+#    Updated: 2025/10/04 17:12:03 by acesar-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC			= 	main.c \
 				minimap.c \
 				error/error.c \
 				gc/gc.c \
-				parser/parcer.c \
+				parser/parser.c \
 				parser/parse_config.c \
 				parser/parse_map.c
 

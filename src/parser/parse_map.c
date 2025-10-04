@@ -32,17 +32,29 @@ static char	save_player_data(t_game *game, char direction, int x, int y)
 	return ('0');
 }
 
-static char	*validate_and_clean_line(t_game *game, char *raw_line, int y)
+static char *validate_and_clean_line(t_game *game, char *raw_line, int y)
 {
-	char	*clean_line;
-	int		x;
+	char *clean_line;
+	int x;
+	int len;
 
-	clean_line = (char *)ft_malloc(ft_strlen(raw_line) + 1);
+	// Remover \n e \r do final da linha
+	len = ft_strlen(raw_line);
+	if (len > 0 && raw_line[len - 1] == '\n') {
+		raw_line[len - 1] = '\0';
+		len--;
+	}
+	if (len > 0 && raw_line[len - 1] == '\r') {
+		raw_line[len - 1] = '\0';
+		len--;
+	}
+
+	clean_line = (char *)ft_malloc(len + 1);
 	if (!clean_line)
 		ft_error("[ALLOC ERROR] Falha na alocação da linha do mapa.");
 
 	x = 0;
-	while (raw_line[x])
+	while (x < len && raw_line[x])
 	{
 		if (raw_line[x] == '0' || raw_line[x] == '1' || raw_line[x] == ' ')
 			clean_line[x] = raw_line[x];
@@ -57,28 +69,27 @@ static char	*validate_and_clean_line(t_game *game, char *raw_line, int y)
 	return (clean_line);
 }
 
-static bool	is_unsafe_neighbor(t_game *game, int y, int x)
+static t_bool is_unsafe_neighbor(t_game *game, int y, int x)
 {
-	int	len;
-
+	// Verificar se está fora dos limites do mapa
 	if (y < 0 || y >= game->map.height)
-		return (true);
-
-	len = ft_strlen(game->map.grid[y]);
-	if (x < 0 || x >= len)
-		return (true);
-
-	if (game->map.grid[y][x] == ' ' &&
-		(y == 0 || y == game->map.height - 1 || x == 0 || x == len - 1))
-		return (true);
+		return (TRUE);
 	
-	return (false);
+	// Verificar se a linha existe e se x está dentro dos limites
+	if (!game->map.grid[y] || x < 0 || x >= (int)ft_strlen(game->map.grid[y]))
+		return (TRUE);
+	
+	// Verificar se é espaço vazio (considerado como fora do mapa)
+	if (game->map.grid[y][x] == ' ')
+		return (TRUE);
+	
+	return (FALSE);
 }
 
-void	validate_map_integrity(t_game *game)
+void validate_map_integrity(t_game *game)
 {
-	int		y;
-	int		x;
+	int y;
+	int x;
 
 	if (game->player.dir_x == 0 && game->player.dir_y == 0)
 		ft_error("[MAP ERROR] O mapa deve ter uma posição inicial de jogador (N, S, E ou W).");
@@ -89,14 +100,18 @@ void	validate_map_integrity(t_game *game)
 		x = 0;
 		while (game->map.grid[y][x])
 		{
-			if (game->map.grid[y][x] == '0')
+			if (game->map.grid[y][x] == '0' || ft_strchr("NSEW", game->map.grid[y][x]))
 			{
+				if (y == 0 || y == game->map.height - 1 || x == 0 || 
+					x == (int)ft_strlen(game->map.grid[y]) - 1)
+					ft_error("[MAP ERROR] Posição do jogador ou espaço vazio na borda do mapa.");
+				
 				if (is_unsafe_neighbor(game, y, x + 1) ||
 					is_unsafe_neighbor(game, y, x - 1) ||
 					is_unsafe_neighbor(game, y + 1, x) ||
 					is_unsafe_neighbor(game, y - 1, x))
 				{
-					ft_error("[MAP ERROR] O mapa não está completamente cercado por paredes (vazamento encontrado).");
+					ft_error("[MAP ERROR] O mapa não está completamente cercado por paredes.");
 				}
 			}
 			x++;
@@ -129,6 +144,6 @@ void	read_map_line(t_game *game, char *raw_line)
 	new_grid[i + 1] = NULL;
 	game->map.grid = new_grid;
 	game->map.height = new_height;
-	if (ft_strlen(clean_line) > game->map.width)
+	if ((int)ft_strlen(clean_line) > game->map.width)
 		game->map.width = ft_strlen(clean_line);
 }

@@ -1,33 +1,32 @@
 #include "../include/cub3d.h"
 
-
 void	init_game(t_game *env)
 {
 	init_player(&env->player);
-	env->map.grid = get_map();
+	// env->map.grid = get_map();
 	env->mlx = mlx_init();
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Cube3D");
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
 	env->address = mlx_get_data_addr(env->img, &env->bpp, &env->size_line, &env->endian);
 }
 
-void    init_player(t_player *player)
+void	init_player(t_player *player)
 {
 	player->x = WIDTH / 2;
 	player->y = HEIGHT / 2;
 	//n=3*PI/2, s=PI/2, east=0, west=PI
 	player->angle = PI;
 	
-	player->key_down = false;
-	player->key_up = false;
-	player->key_left = false;
-	player->key_right = false;
-	player->key_esc = false;
-	player->left_rotate = false;
-	player->right_rotate = false;
+	player->key_down = FALSE;
+	player->key_up = FALSE;
+	player->key_left = FALSE;
+	player->key_right = FALSE;
+	player->key_esc = FALSE;
+	player->left_rotate = FALSE;
+	player->right_rotate = FALSE;
 }
 
-void    clear_image(t_game * env)
+void	clear_image(t_game * env)
 {
 	int y;
 	int x;

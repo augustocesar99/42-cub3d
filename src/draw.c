@@ -1,88 +1,86 @@
 #include "../include/cub3d.h"
 
-void    put_pixel(int x, int y, int color, t_game *env)
+void	put_pixel(int x, int y, int color, t_game *env)
 {
-    char	*pxl;
+	char	*pxl;
 
-    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
-    {
-    	pxl = env->address +(y * env->size_line
-    		+ x * (env->bpp / 8));
-    	*(unsigned int *)pxl = color;
-    }
+	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+	{
+		pxl = env->address +(y * env->size_line
+			+ x * (env->bpp / 8));
+		*(unsigned int *)pxl = color;
+	}
 }
 
-void    move_player(t_game *env)
+void	move_player(t_game *env)
 {
-    double  cos_angle;
-    double  sin_angle;
+	double  cos_angle;
+	double  sin_angle;
 	float	old_x;
 	float	old_y;
 
 	old_x = env->player.x;
 	old_y = env->player.y;
-    if (env->player.left_rotate)
-        env->player.angle -= ANGLE_SPEED;
-    if (env->player.right_rotate)
-        env->player.angle += ANGLE_SPEED;
-    if (env->player.angle > 2 * PI)
-        env->player.angle = 0;
-    if (env->player.angle < 0)
-        env->player.angle = 2 * PI;
-    
+	if (env->player.left_rotate)
+		env->player.angle -= ANGLE_SPEED;
+	if (env->player.right_rotate)
+		env->player.angle += ANGLE_SPEED;
+	if (env->player.angle > 2 * PI)
+		env->player.angle = 0;
+	if (env->player.angle < 0)
+		env->player.angle = 2 * PI;
+	
 	cos_angle = cos(env->player.angle);
-    sin_angle = sin(env->player.angle);
-    
-    if (env->player.key_up)
-    {
-        env->player.x += cos_angle * SPEED;
-        env->player.y += sin_angle * SPEED;
-    }
-    if (env->player.key_down)
-    {
-        env->player.x -= cos_angle * SPEED;
-        env->player.y -= sin_angle * SPEED;
-    }
-    if (env->player.key_left)
-    {
-        env->player.x += sin_angle * SPEED;
-        env->player.y -= cos_angle * SPEED;
-    }
-    if (env->player.key_right)
-    {
-        env->player.x -= sin_angle * SPEED;
-        env->player.y += cos_angle * SPEED;
-    }
+	sin_angle = sin(env->player.angle);
+	
+	if (env->player.key_up)
+	{
+		env->player.x += cos_angle * SPEED;
+		env->player.y += sin_angle * SPEED;
+	}
+	if (env->player.key_down)
+	{
+		env->player.x -= cos_angle * SPEED;
+		env->player.y -= sin_angle * SPEED;
+	}
+	if (env->player.key_left)
+	{
+		env->player.x += sin_angle * SPEED;
+		env->player.y -= cos_angle * SPEED;
+	}
+	if (env->player.key_right)
+	{
+		env->player.x -= sin_angle * SPEED;
+		env->player.y += cos_angle * SPEED;
+	}
 	if (touch(env->player.x, env->player.y, env))
-    {
-        env->player.x = old_x;
-        env->player.y = old_y;
-    }
+	{
+		env->player.x = old_x;
+		env->player.y = old_y;
+	}
 
 }
 
-bool    touch(float px, float py, t_game *env)
+t_bool	touch(float px, float py, t_game *env)
 {
-    int x;
-    int y;
-	int	rows;
+	int x;
+	int y;
 
-	rows = 0;
-    x = px / TILE_SIZE;
-    y = py / TILE_SIZE;
+	x = px / TILE_SIZE;
+	y = py / TILE_SIZE;
 	if (y < 0 || x < 0)
-		return (true);
+		return (TRUE);
 	// while (env->map.grid[rows])
 	// 	rows++;
 	// if (y >= rows)
 	// 	return (true);
 	if (env->map.grid[y] == NULL)
-		return (true);
+		return (TRUE);
 	if (x > (int) ft_strlen(env->map.grid[y]))
-		return (true);
-    if (env->map.grid[y][x] == '1')
-        return (true);
-    return (false);
+		return (TRUE);
+	if (env->map.grid[y][x] == '1')
+		return (TRUE);
+	return (FALSE);
 }
 
 float	distance(float x, float y)
@@ -105,17 +103,17 @@ void draw_line(t_game *env, float start_x, int i)
 		ray_y += sin(start_x);
 	}
 	float	dist = distance(ray_x - env->player.x, ray_y - env->player.y);
-    float   corrected = dist * cosf(start_x - env->player.angle);
-    if (corrected < 0.001)
-        corrected = 0.001;
-    float plane = WIDTH / 2 / tanf(PI/3.0 *0.5);
-    float line_h = (int)((float)TILE_SIZE * plane / corrected);
-    int start_y = (HEIGHT - line_h) / 2;
-    if (start_y < 0)
-        start_y = 0;
-    int end = start_y + line_h;
-    if (end > HEIGHT)
-        end = HEIGHT;
+	float   corrected = dist * cosf(start_x - env->player.angle);
+	if (corrected < 0.001)
+		corrected = 0.001;
+	float plane = WIDTH / 2 / tanf(PI/3.0 *0.5);
+	float line_h = (int)((float)TILE_SIZE * plane / corrected);
+	int start_y = (HEIGHT - line_h) / 2;
+	if (start_y < 0)
+		start_y = 0;
+	int end = start_y + line_h;
+	if (end > HEIGHT)
+		end = HEIGHT;
 
 	// float	height = (TILE_SIZE / dist) * WIDTH / 2;
 	// int		start_y = (HEIGHT - height) / 2;
@@ -130,48 +128,44 @@ void draw_line(t_game *env, float start_x, int i)
 
 int draw_loop(t_game *env)
 {
-    float       ray_x;
-    float       ray_y;
 	float		fraction;
 	float		start_x;
 	int			i;
-    // t_minimap      minimap;
+	// t_minimap      minimap;
 
-    fraction = PI / 3 / WIDTH;
+	fraction = PI / 3 / WIDTH;
 	start_x = env->player.angle - PI / 6;
 	i = 0;
 	move_player(env);
-    clear_image(env);
-    ray_x = env->player.x;
-    ray_y = env->player.y;
+	clear_image(env);
 	// init_minimap(&minimap, env);
-    // build_minimap(env, &minimap);
+	// build_minimap(env, &minimap);
 	while (i < WIDTH)
 	{
 		draw_line(env, start_x, i);
 		start_x += fraction;
 		i++;
 	}
-    mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
+	mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
 	//mlx_put_image_to_window(minimap.mlx, minimap.win, minimap.img, 10, 10);
-    return (0);
+	return (0);
 
 }
 
 char    **get_map(void)
 {
-    char    **map;
+	char    **map;
 
-    map = ft_malloc(sizeof(char *)  * 10);
-    map[0] = "1111111111111";
-    map[1] = "1010000000001";
-    map[2] = "1010000000001";
-    map[3] = "1000010000001";
-    map[4] = "1000000000001";
-    map[5] = "1000000000001";
-    map[6] = "1000100000001";
-    map[7] = "1000000000001";
-    map[8] = "1111111111111";
-    map[9] = NULL;
-    return (map);
+	map = ft_malloc(sizeof(char *)  * 10);
+	map[0] = "1111111111111";
+	map[1] = "1010000000001";
+	map[2] = "1010000000001";
+	map[3] = "1000010000001";
+	map[4] = "1000000000001";
+	map[5] = "1000000000001";
+	map[6] = "1000100000001";
+	map[7] = "1000000000001";
+	map[8] = "1111111111111";
+	map[9] = NULL;
+	return (map);
 }
