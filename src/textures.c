@@ -23,10 +23,14 @@ int load_texture_path(t_game *e, t_tex *t, const char *path)
     set_tex_zero(t);
     t->img = mlx_xpm_file_to_image(e->mlx, (char *)path, &w, &h);
     if (!t->img)
+    {
+        ft_printf("texture image failed\n");
         return (1);
+    }
     t->addr = (int *)mlx_get_data_addr(t->img, &t->bpp, &t->line_len, &t->endian);
     if (!t->addr)
     {
+        ft_printf("texture address failed\n");
         mlx_destroy_image(e->mlx, t->img);
         set_tex_zero(t);
         return (1);
@@ -62,6 +66,14 @@ void destroy_all_textures(t_game *e)
 int load_all_textures(t_game *e,
         const char *no, const char *so, const char *we, const char *ea)
 {
+    int i;
+
+    i = 0;
+    while (i < 4)
+    {
+        set_tex_zero(&e->tex[i]);
+        i++;
+    }
     if (load_texture_path(e, &e->tex[TEX_NO], no))
         return (destroy_all_textures(e), 1);
     if (load_texture_path(e, &e->tex[TEX_SO], so))

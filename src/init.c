@@ -12,7 +12,15 @@ void	init_game(t_game *env)
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Cube3D");
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
     env->address = mlx_get_data_addr(env->img, &env->bpp, &env->size_line, &env->endian);
-    if (load_all_textures(&env,
+    
+    int i = 0;
+    while (i < 4)
+    {
+        set_tex_zero(&env->tex[i]);
+        i++;
+    }
+    
+    if (load_all_textures(env,
         "./textures/north.xpm",
         "./textures/south.xpm",
         "./textures/west.xpm",
