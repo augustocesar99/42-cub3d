@@ -1,14 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+         #
+#    By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/24 18:23:17 by acesar-m          #+#    #+#              #
-#    Updated: 2025/09/12 14:23:20 by ekeller-@st      ###   ########.fr        #
+#    Updated: 2025/10/06 12:04:15 by ekeller-         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 NAME		= cub3D
 
@@ -19,7 +19,7 @@ CFLAGS		= -I include -I $(MLX_DIR) -I $(LIBFT_DIR)
 SRC_DIR		= src
 OBJ_DIR		= obj
 
-SRC			= main.c init.c gc.c hooks.c draw.c minimap.c
+SRC			= main.c init.c gc.c hooks.c draw_test.c render.c textures.c
 
 OBJ			= $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 

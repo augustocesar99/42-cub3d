@@ -1,0 +1,14 @@
+/* XPM */
+static char * east_xpm[] = {
+"8 8 2 1",
+"A c #F9A825",
+"B c #F57F17",
+"ABABABAB",
+"BABABABA",
+"ABABABAB",
+"BABABABA",
+"ABABABAB",
+"BABABABA",
+"ABABABAB",
+"BABABABA"
+};

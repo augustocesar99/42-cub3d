@@ -4,18 +4,30 @@
 void	init_game(t_game *env)
 {
 	init_player(&env->player);
+    //take out after parser
+    env->floor = 0x00303030;
+    env->ceiling  = 0x0080B4FF;
     env->map.grid = get_map();
     env->mlx = mlx_init();
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Cube3D");
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
     env->address = mlx_get_data_addr(env->img, &env->bpp, &env->size_line, &env->endian);
+    if (load_all_textures(&env,
+        "./textures/north.xpm",
+        "./textures/south.xpm",
+        "./textures/west.xpm",
+        "./textures/east.xpm"))
+        {
+            ft_printf("texture error");
+        }
 }
 
 void    init_player(t_player *player)
 {
+    //to be initialized by parser
     player->x = WIDTH / 2;
     player->y = HEIGHT / 2;
-    //n=3*PI/2, s=PI/2, east=0, west=PI
+
     player->angle = PI;
     
     player->key_down = false;
