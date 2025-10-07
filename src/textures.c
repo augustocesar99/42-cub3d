@@ -2,99 +2,99 @@
 
 /* Ensure t_tex fields start null/zeroed before loading. */
 
-void set_tex_zero(t_tex *t)
+void	set_tex_zero(t_texture *t)
 {
-    t->img = NULL;
-    t->addr = NULL;
-    t->w = 0;
-    t->h = 0;
-    t->bpp = 0;
-    t->line_len = 0;
-    t->endian = 0;
+	t->img = NULL;
+	t->addr = NULL;
+	t->w = 0;
+	t->h = 0;
+	t->bpp = 0;
+	t->line_len = 0;
+	t->endian = 0;
 }
 
-int load_texture_path(t_game *e, t_tex *t, const char *path)
+int	load_texture_path(t_game *e, t_texture *t, const char *path)
 {
-    int w;
-    int h;
+	int	w;
+	int	h;
 
-    if (!path || !*path)
-        return (1);
-    set_tex_zero(t);
-    t->img = mlx_xpm_file_to_image(e->mlx, (char *)path, &w, &h);
-    if (!t->img)
-    {
-        ft_printf("texture image failed\n");
-        return (1);
-    }
-    t->addr = (int *)mlx_get_data_addr(t->img, &t->bpp, &t->line_len, &t->endian);
-    if (!t->addr)
-    {
-        ft_printf("texture address failed\n");
-        mlx_destroy_image(e->mlx, t->img);
-        set_tex_zero(t);
-        return (1);
-    }
-    t->w = w;
-    t->h = h;
-    return (0);
+	if (!path || !*path)
+		return (1);
+	set_tex_zero(t);
+	t->img = mlx_xpm_file_to_image(e->mlx, (char *)path, &w, &h);
+	if (!t->img)
+	{
+		ft_printf("texture image failed\n");
+		return (1);
+	}
+	t->addr = (int *)mlx_get_data_addr(t->img,
+			&t->bpp, &t->line_len, &t->endian);
+	if (!t->addr)
+	{
+		ft_printf("texture address failed\n");
+		mlx_destroy_image(e->mlx, t->img);
+		set_tex_zero(t);
+		return (1);
+	}
+	t->w = w;
+	t->h = h;
+	return (0);
 }
 
-void destroy_texture(t_game *e, t_tex *t)
+void	destroy_texture(t_game *e, t_texture *t)
 {
-    if (t->img)
-    {
-        mlx_destroy_image(e->mlx, t->img);
-        t->img = NULL;
-    }
-    set_tex_zero(t);
+	if (t->img)
+	{
+		mlx_destroy_image(e->mlx, t->img);
+		t->img = NULL;
+	}
+	set_tex_zero(t);
 }
 
-void destroy_all_textures(t_game *e)
+void	destroy_all_textures(t_game *e)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (i < 4)
-    {
-        destroy_texture(e, &e->tex[i]);
-        i++;
-    }
+	i = 0;
+	while (i < 4)
+	{
+		destroy_texture(e, &e->tex[i]);
+		i++;
+	}
 }
 
 /* Returns non-zero on error; destroys any previously loaded textures */
-int load_all_textures(t_game *e,
-        const char *no, const char *so, const char *we, const char *ea)
+int	load_all_textures(t_game *e)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (i < 4)
-    {
-        set_tex_zero(&e->tex[i]);
-        i++;
-    }
-    if (load_texture_path(e, &e->tex[TEX_NO], no))
-        return (destroy_all_textures(e), 1);
-    if (load_texture_path(e, &e->tex[TEX_SO], so))
-        return (destroy_all_textures(e), 1);
-    if (load_texture_path(e, &e->tex[TEX_WE], we))
-        return (destroy_all_textures(e), 1);
-    if (load_texture_path(e, &e->tex[TEX_EA], ea))
-        return (destroy_all_textures(e), 1);
-    return (0);
+	i = 0;
+	while (i < 4)
+	{
+		set_tex_zero(&e->tex[i]);
+		i++;
+	}
+	if (load_texture_path(e, &e->tex[TEX_NO], e->no_tex.path))
+		return (destroy_all_textures(e), 1);
+	if (load_texture_path(e, &e->tex[TEX_SO], e->so_tex.path))
+		return (destroy_all_textures(e), 1);
+	if (load_texture_path(e, &e->tex[TEX_WE], e->we_tex.path))
+		return (destroy_all_textures(e), 1);
+	if (load_texture_path(e, &e->tex[TEX_EA], e->ea_tex.path))
+		return (destroy_all_textures(e), 1);
+	return (0);
 }
 
 /* Safe texel fetch that respects line_len and bpp; returns packed int color */
-int tex_get_pixel(const t_tex *t, int x, int y)
+int	tex_get_pixel(const t_texture *t, int x, int y)
 {
-    char    *p;
+	char	*p;
 
-    if (!t || !t->addr)
-        return (0);
-    if (x < 0 || y < 0 || x >= t->w || y >= t->h)
-        return (0);
-    p = (char *)t->addr;
-    p += y * t->line_len + x * (t->bpp / 8);
-    return (*(int *)p);
+	if (!t || !t->addr)
+		return (0);
+	if (x < 0 || y < 0 || x >= t->w || y >= t->h)
+		return (0);
+	p = (char *)t->addr;
+	p += y * t->line_len + x * (t->bpp / 8);
+	return (*(int *)p);
 }

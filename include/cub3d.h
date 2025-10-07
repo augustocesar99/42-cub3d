@@ -6,7 +6,7 @@
 /*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/06 16:19:30 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/10/07 17:01:26 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct	s_texture
 	int		bpp;
 	int		line_len;
 	int		endian;
-}	t_tex;
+}	t_texture;
 
 typedef struct	s_map
 {
@@ -93,7 +93,7 @@ typedef struct	s_player
 	// double	plane_y;
 }	t_player;
 
-typedef struct s_parse
+typedef struct	s_parse
 {
 	int		fd;
 	int		line_number;
@@ -103,70 +103,63 @@ typedef struct s_parse
 
 typedef struct	s_game
 {
-	void		*mlx;
-	void		*win;
-	void		*img;
-	char		*address;
-	int			bpp;
-	int			size_line;
-	int			endian;
-	t_map		map;
-	t_player	player;
-	t_tex	tex[4];
+	void			*mlx;
+	void			*win;
+	void			*img;
+	char			*address;
+	int				bpp;
+	int				size_line;
+	int				endian;
+	t_map			map;
+	t_player		player;
+	t_texture		tex[4];
 	unsigned int	floor;
 	unsigned int	ceiling;
-	// t_parse		parse;
+	t_parse			parse;
+	t_texture		no_tex;
+	t_texture		so_tex;
+	t_texture		we_tex;
+	t_texture		ea_tex;
 }	t_game;
 
-// typedef struct	s_minimap
-// {
-// 	void		*mlx;
-// 	void		*win;
-// 	void		*img;
-// 	char		*address;
-// 	int			bpp;
-// 	int			size_line;
-// 	int			endian;
-// }	t_minimap;
-
 //Struct additions:
-typedef enum e_texid
+typedef enum	e_texid
 {
-    TEX_NO = 0,
-    TEX_SO = 1,
-    TEX_WE = 2,
-    TEX_EA = 3
-}   t_texid;
+	TEX_NO = 0,
+	TEX_SO = 1,
+	TEX_WE = 2,
+	TEX_EA = 3
+}	t_texid;
 
-typedef struct s_vec
+typedef struct	s_vec
 {
-    double  x;
-    double  y;
-}   t_vec;
+	double	x;
+	double	y;
+}	t_vec;
 
-typedef struct s_ray
+typedef struct	s_ray
 {
-    t_vec   dir;        /* rayDirX/rayDirY */
-    int     mapx;
-    int     mapy;
-    t_vec   delta;      /* deltaDistX/Y */
-    t_vec   side;       /* sideDistX/Y */
-    int     step_x;
-    int     step_y;
-    int     hit;        /* 0 -> keep DDA; 1 -> wall hit */
-    int     side_hit;   /* 0 -> X-side; 1 -> Y-side */
-    double  dist;       /* perpWallDist */
-}   t_ray;
+	t_vec	dir;        /* rayDirX/rayDirY */
+	int		mapx;
+	int		mapy;
+	t_vec	delta;      /* deltaDistX/Y */
+	t_vec	side;       /* sideDistX/Y */
+	int		step_x;
+	int		step_y;
+	int		hit;        /* 0 -> keep DDA; 1 -> wall hit */
+	int		side_hit;   /* 0 -> X-side; 1 -> Y-side */
+	double	dist;       /* perpWallDist */
+}	t_ray;
 
-typedef struct s_drawcol
+typedef struct	s_drawcol
 {
-    int     line_h;
-    int     start;
-    int     end;
-    double  step;
-    double  tex_pos;
-    int     tex_x;
-}   t_drawcol;
+	int		line_h;
+	int		start;
+	int		end;
+	double	step;
+	double	tex_pos;
+	int		tex_x;
+}	t_drawcol;
 
 //End struct additions
 
@@ -179,42 +172,30 @@ void	ft_free(void *ptr);
 //init.c
 void	init_game(t_game *env);
 void	init_player(t_player *player);
-void    clear_image(t_game * env);
+void	clear_image(t_game * env);
 int		close_win(t_game *env);
 
 
 //hooks.c
-int 	key_release(int keycode, t_game *env);
-int 	key_press(int keycode, t_game *env);
+int		key_release(int keycode, t_game *env);
+int		key_press(int keycode, t_game *env);
 
 //draw.c
-void    put_pixel(int x, int y, int color, t_game *env);
-void    move_player(t_game *env);
-char    **get_map(void);
-bool    touch(float px, float py, t_game *env);
+void	put_pixel(int x, int y, int color, t_game *env);
+void	move_player(t_game *env);
+char	**get_map(void);
+bool	touch(float px, float py, t_game *env);
 
 //render.c
+int		map_wall(t_game *e, int mx, int my);
 int		draw_loop(t_game *env);
 
-
-
-
 /* textures API */
-int     load_texture_path(t_game *e, t_tex *t, const char *path);
-int     load_all_textures(t_game *e,
-            const char *no, const char *so, const char *we, const char *ea);
-void    destroy_texture(t_game *e, t_tex *t);
-void    destroy_all_textures(t_game *e);
-int     tex_get_pixel(const t_tex *t, int x, int y);
-void set_tex_zero(t_tex *t);
-
-
-
-//minimap.c
-// void    draw_square(int x, int y, int size, int color, t_minimap *minimap);
-// void    draw_map(t_game *env, t_minimap *minimap);
-// void	build_minimap(t_game *env, t_minimap *minimap);
-// void    put_pixel_minimap(int x, int y, int color, t_minimap *env);
-// void	init_minimap(t_minimap	*minimap, t_game *env);
+int		load_texture_path(t_game *e, t_texture *t, const char *path);
+int		load_all_textures(t_game *e);
+void	destroy_texture(t_game *e, t_texture *t);
+void	destroy_all_textures(t_game *e);
+int		tex_get_pixel(const t_texture *t, int x, int y);
+void	set_tex_zero(t_texture *t);
 
 #endif

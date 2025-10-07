@@ -2,7 +2,9 @@
 
 static t_malloc	**get_gc(void)
 {
-	static t_malloc	*g_mallocs = NULL;
+	static t_malloc	*g_mallocs;
+
+	g_mallocs = NULL;
 	return (&g_mallocs);
 }
 
@@ -35,7 +37,7 @@ void	ft_free(void *ptr)
 	t_malloc	*prev;
 
 	if (!ptr)
-		return;
+		return ;
 	gc = get_gc();
 	curr = *gc;
 	prev = NULL;
@@ -49,7 +51,7 @@ void	ft_free(void *ptr)
 				*gc = curr->next;
 			free(curr->ptr);
 			free(curr);
-			return;
+			return ;
 		}
 		prev = curr;
 		curr = curr->next;
