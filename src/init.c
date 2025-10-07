@@ -3,36 +3,35 @@
 
 void	init_game(t_game *env)
 {
-	init_player(&env->player);
+	int i;
+
+    init_player(&env->player);
     //take out after parser
     env->floor = 0x00303030;
     env->ceiling  = 0x0080B4FF;
+    //take out after parser
     env->map.grid = get_map();
     env->mlx = mlx_init();
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Cube3D");
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
     env->address = mlx_get_data_addr(env->img, &env->bpp, &env->size_line, &env->endian);
-    
-    int i = 0;
+    i = 0;
     while (i < 4)
     {
         set_tex_zero(&env->tex[i]);
         i++;
     }
-    
     if (load_all_textures(env,
         "./textures/north.xpm",
         "./textures/south.xpm",
         "./textures/west.xpm",
         "./textures/east.xpm"))
-        {
             ft_printf("texture error");
-        }
 }
 
 void    init_player(t_player *player)
 {
-    //to be initialized by parser
+    //take out after parser
     player->x = WIDTH / 2;
     player->y = HEIGHT / 2;
 
@@ -71,6 +70,7 @@ void    clear_image(t_game * env)
 
 int	close_win(t_game *env)
 {
+    destroy_all_textures(env);
     if (env->img)
         mlx_destroy_image(env->mlx, env->img);
     if (env->win)
@@ -80,7 +80,7 @@ int	close_win(t_game *env)
         mlx_destroy_display(env->mlx);
         free(env->mlx);
     }
-    exit(0);
+    ft_gc_exit(0);
 }
 
 int main(void)

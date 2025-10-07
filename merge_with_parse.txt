@@ -1,0 +1,8 @@
+
+o parser vai me dar ja preenchido
+    t_game->floor
+    t_game->ceiling
+	t_game->map.grid
+	t_player->x
+	t_player->y
+	
