@@ -57,23 +57,23 @@ void	move_player(t_game *env)
 	old_y = env->player.y;
 	rotate(env);
 	move(env);
-	// if (map_wall(env, env->player.x / TILE_SIZE, env->player.y / TILE_SIZE))
-	// {
-	// 	env->player.x = old_x;
-	// 	env->player.y = old_y;
-	// }
-	if (touch(env->player.x, env->player.y, env))
+	if (map_wall(env, env->player.x / TILE_SIZE, env->player.y / TILE_SIZE))
 	{
 		env->player.x = old_x;
 		env->player.y = old_y;
 	}
+	// if (touch(env->player.x, env->player.y, env))
+	// {
+	// 	env->player.x = old_x;
+	// 	env->player.y = old_y;
+	// }
 }
 
 char	**get_map(void)
 {
 	char	**map;
 
-	map = ft_malloc(sizeof(char *) * 10);
+	map = malloc(sizeof(char *) * 10);
 	map[0] = "1111111111111";
 	map[1] = "1010000000001";
 	map[2] = "1010000000001";

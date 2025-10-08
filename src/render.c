@@ -44,6 +44,7 @@ static void	set_delta(t_ray *r)
 		r->delta.y = fabs(1.0 / r->dir.y);
 }
 
+//cam_x set pixel columns between -1 and 1. 
 static void	ray_setup(t_game *e, t_ray *r, t_vec v[2], int x)
 {
 	double	cam_x;
@@ -154,8 +155,8 @@ static void	bg_fill_half(t_game *e, int y0, int y1, int color)
 
 static void	draw_background(t_game *e)
 {
-	bg_fill_half(e, 0, HEIGHT / 2, e->ceiling);
-	bg_fill_half(e, HEIGHT / 2, HEIGHT, e->floor);
+	bg_fill_half(e, 0, HEIGHT / 2, e->ceiling.value);
+	bg_fill_half(e, HEIGHT / 2, HEIGHT, e->floor.value);
 }
 
 static void	compute_column_bounds(t_ray *r, t_drawcol *d)

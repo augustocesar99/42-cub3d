@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/07 17:01:26 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/10/08 17:54:52 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -46,13 +46,13 @@ typedef struct	s_malloc
 	struct s_malloc		*next;
 }	t_malloc;
 
-// typedef struct	s_rgb
-// {
-// 	int r;
-// 	int g;
-// 	int b;
-// 	int value; // armazenar (r << 16 | g << 8 | b)
-// }	t_rgb;
+typedef struct	s_rgb
+{
+	int r;
+	int g;
+	int b;
+	int value; // armazenar (r << 16 | g << 8 | b)
+}	t_rgb;
 
 
 typedef struct	s_texture
@@ -113,8 +113,8 @@ typedef struct	s_game
 	t_map			map;
 	t_player		player;
 	t_texture		tex[4];
-	unsigned int	floor;
-	unsigned int	ceiling;
+	t_rgb			floor;
+	t_rgb			ceiling;
 	t_parse			parse;
 	t_texture		no_tex;
 	t_texture		so_tex;

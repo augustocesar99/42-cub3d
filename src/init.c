@@ -6,8 +6,8 @@ void	init_game(t_game *env)
 
 	init_player(&env->player);
 	//take out after parser
-	env->floor = 0x00303030;
-	env->ceiling = 0x0080B4FF;
+	env->floor.value = 0x00303030;
+	env->ceiling.value = 0x0080B4FF;
 	env->map.grid = get_map();
 	env->no_tex.path = "./textures/north.xpm";
 	env->so_tex.path = "./textures/south.xpm";
@@ -76,7 +76,7 @@ int	close_win(t_game *env)
 		mlx_destroy_display(env->mlx);
 		free(env->mlx);
 	}
-	ft_gc_exit(0);
+	free (env->map.grid);
 	exit(0);
 }
 
