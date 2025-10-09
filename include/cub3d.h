@@ -6,7 +6,7 @@
 /*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/08 17:54:52 by ekeller-         ###   ########.fr       */
+/*   Updated: 2025/10/09 18:52:22 by ekeller-         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -51,7 +51,7 @@ typedef struct	s_rgb
 	int r;
 	int g;
 	int b;
-	int value; // armazenar (r << 16 | g << 8 | b)
+	int value;
 }	t_rgb;
 
 
@@ -69,9 +69,9 @@ typedef struct	s_texture
 
 typedef struct	s_map
 {
-	char	**grid;     // mapa em matriz
-	int		width;      // largura do mapa
-	int		height;     // altura do mapa
+	char	**grid;
+	int		width;
+	int		height;
 }	t_map;
 
 typedef struct	s_player
@@ -97,7 +97,7 @@ typedef struct	s_parse
 {
 	int		fd;
 	int		line_number;
-	int		elements_found; // bitmask para verificar elementos
+	int		elements_found;
 	int		map_started;
 }	t_parse;
 
@@ -120,6 +120,7 @@ typedef struct	s_game
 	t_texture		so_tex;
 	t_texture		we_tex;
 	t_texture		ea_tex;
+	char			spawn_side;
 }	t_game;
 
 //Struct additions:
@@ -139,16 +140,16 @@ typedef struct	s_vec
 
 typedef struct	s_ray
 {
-	t_vec	dir;        /* rayDirX/rayDirY */
+	t_vec	dir;
 	int		mapx;
 	int		mapy;
-	t_vec	delta;      /* deltaDistX/Y */
-	t_vec	side;       /* sideDistX/Y */
+	t_vec	delta;
+	t_vec	side;
 	int		step_x;
 	int		step_y;
-	int		hit;        /* 0 -> keep DDA; 1 -> wall hit */
-	int		side_hit;   /* 0 -> X-side; 1 -> Y-side */
-	double	dist;       /* perpWallDist */
+	int		hit;
+	int		side_hit;
+	double	dist;
 }	t_ray;
 
 typedef struct	s_drawcol
@@ -180,22 +181,35 @@ int		close_win(t_game *env);
 int		key_release(int keycode, t_game *env);
 int		key_press(int keycode, t_game *env);
 
-//draw.c
+//move.c
 void	put_pixel(int x, int y, int color, t_game *env);
 void	move_player(t_game *env);
 char	**get_map(void);
-bool	touch(float px, float py, t_game *env);
 
 //render.c
-int		map_wall(t_game *e, int mx, int my);
 int		draw_loop(t_game *env);
 
-/* textures API */
+//dda.c
+void	make_camera(t_game *e, t_vec *dir, t_vec *plane);
+void	ray_setup(t_game *e, t_ray *r, t_vec v[2], int x);
+void	ray_dda(t_game *e, t_ray *r);
+
+//draw_background
+int		map_wall(t_game *e, int mx, int my);
+void	bg_fill_half(t_game *e, int y0, int y1, int color);
+void	draw_background(t_game *e);
+
+//textures.c
 int		load_texture_path(t_game *e, t_texture *t, const char *path);
 int		load_all_textures(t_game *e);
+void	draw_textured_column(t_game *e, int x, t_drawcol *d, t_texture *tx);
+int		pick_tex(t_ray *r);
+
+//textures_helper.c
 void	destroy_texture(t_game *e, t_texture *t);
 void	destroy_all_textures(t_game *e);
 int		tex_get_pixel(const t_texture *t, int x, int y);
 void	set_tex_zero(t_texture *t);
+
 
 #endif

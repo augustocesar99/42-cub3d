@@ -1,18 +1,5 @@
 #include "../include/cub3d.h"
 
-/* Ensure t_tex fields start null/zeroed before loading. */
-
-void	set_tex_zero(t_texture *t)
-{
-	t->img = NULL;
-	t->addr = NULL;
-	t->w = 0;
-	t->h = 0;
-	t->bpp = 0;
-	t->line_len = 0;
-	t->endian = 0;
-}
-
 int	load_texture_path(t_game *e, t_texture *t, const char *path)
 {
 	int	w;
@@ -27,7 +14,7 @@ int	load_texture_path(t_game *e, t_texture *t, const char *path)
 		ft_printf("texture image failed\n");
 		return (1);
 	}
-	t->addr = (int *)mlx_get_data_addr(t->img,
+	t->addr = mlx_get_data_addr(t->img,
 			&t->bpp, &t->line_len, &t->endian);
 	if (!t->addr)
 	{
@@ -39,28 +26,6 @@ int	load_texture_path(t_game *e, t_texture *t, const char *path)
 	t->w = w;
 	t->h = h;
 	return (0);
-}
-
-void	destroy_texture(t_game *e, t_texture *t)
-{
-	if (t->img)
-	{
-		mlx_destroy_image(e->mlx, t->img);
-		t->img = NULL;
-	}
-	set_tex_zero(t);
-}
-
-void	destroy_all_textures(t_game *e)
-{
-	int	i;
-
-	i = 0;
-	while (i < 4)
-	{
-		destroy_texture(e, &e->tex[i]);
-		i++;
-	}
 }
 
 /* Returns non-zero on error; destroys any previously loaded textures */
@@ -85,16 +50,36 @@ int	load_all_textures(t_game *e)
 	return (0);
 }
 
-/* Safe texel fetch that respects line_len and bpp; returns packed int color */
-int	tex_get_pixel(const t_texture *t, int x, int y)
+int	pick_tex(t_ray *r)
 {
-	char	*p;
+	if (r->side_hit == 0)
+	{
+		if (r->dir.x > 0.0)
+			return (TEX_WE);
+		return (TEX_EA);
+	}
+	if (r->dir.y > 0.0)
+		return (TEX_NO);
+	return (TEX_SO);
+}
 
-	if (!t || !t->addr)
-		return (0);
-	if (x < 0 || y < 0 || x >= t->w || y >= t->h)
-		return (0);
-	p = (char *)t->addr;
-	p += y * t->line_len + x * (t->bpp / 8);
-	return (*(int *)p);
+void	draw_textured_column(t_game *e, int x, t_drawcol *d, t_texture *tx)
+{
+	int	y;
+	int	ty;
+	int	color;
+
+	y = d->start;
+	while (y <= d->end)
+	{
+		ty = d->tex_pos;
+		if (ty < 0)
+			ty = 0;
+		if (ty >= tx->h)
+			ty = tx->h - 1;
+		color = tex_get_pixel(tx, d->tex_x, ty);
+		put_pixel(x, y, color, e);
+		d->tex_pos += d->step;
+		y++;
+	}
 }

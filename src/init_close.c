@@ -1,10 +1,25 @@
 #include "../include/cub3d.h"
 
+static void	spawn(t_game *env)
+{
+	if (env->spawn_side == 'N')
+		env->player.angle = 3 * PI / 2;
+	else if (env->spawn_side == 'S')
+		env->player.angle = PI / 2;
+	else if (env->spawn_side == 'E')
+		env->player.angle = 0;
+	else if (env->spawn_side == 'W')
+		env->player.angle = PI;
+	else
+		ft_printf("spawn error\n");
+}
+
 void	init_game(t_game *env)
 {
 	int	i;
 
 	init_player(&env->player);
+	//
 	//take out after parser
 	env->floor.value = 0x00303030;
 	env->ceiling.value = 0x0080B4FF;
@@ -13,7 +28,9 @@ void	init_game(t_game *env)
 	env->so_tex.path = "./textures/south.xpm";
 	env->we_tex.path = "./textures/west.xpm";
 	env->ea_tex.path = "./textures/east.xpm";
+	env->spawn_side = 'W';
 	//take out after parse
+	spawn(env);
 	env->mlx = mlx_init();
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Cube3D");
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
@@ -34,8 +51,7 @@ void	init_player(t_player *player)
 	//take out after parser
 	player->x = WIDTH / 2;
 	player->y = HEIGHT / 2;
-	//change to direction after parsing
-	player->angle = PI;
+	//take out after parser
 	player->key_down = false;
 	player->key_up = false;
 	player->key_left = false;
@@ -78,17 +94,4 @@ int	close_win(t_game *env)
 	}
 	free (env->map.grid);
 	exit(0);
-}
-
-int	main(void)
-{
-	t_game	env;
-
-	init_game(&env);
-	mlx_hook(env.win, 2, 1L << 0, key_press, &env);
-	mlx_hook(env.win, 3, 1L << 1, key_release, &env);
-	mlx_hook(env.win, 17, 0, close_win, &env);
-	mlx_loop_hook(env.mlx, draw_loop, &env);
-	mlx_loop(env.mlx);
-	return (0);
 }

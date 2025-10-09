@@ -62,11 +62,6 @@ void	move_player(t_game *env)
 		env->player.x = old_x;
 		env->player.y = old_y;
 	}
-	// if (touch(env->player.x, env->player.y, env))
-	// {
-	// 	env->player.x = old_x;
-	// 	env->player.y = old_y;
-	// }
 }
 
 char	**get_map(void)
@@ -85,22 +80,4 @@ char	**get_map(void)
 	map[8] = "111111 111111";
 	map[9] = NULL;
 	return (map);
-}
-
-bool	touch(float px, float py, t_game *env)
-{
-	int	x;
-	int	y;
-
-	x = px / TILE_SIZE;
-	y = py / TILE_SIZE;
-	if (y < 0 || x < 0)
-		return (true);
-	if (env->map.grid[y] == NULL)
-		return (true);
-	if (x > ft_strlen(env->map.grid[y]))
-		return (true);
-	if (env->map.grid[y][x] == '1')
-		return (true);
-	return (false);
 }
