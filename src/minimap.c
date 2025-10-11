@@ -1,88 +1,73 @@
 #include "../include/cub3d.h"
 
-void	put_pixel_minimap(int x, int y, int color, t_minimap *env)
+static void	draw_minimap_tile(t_game *game, int map_x, int map_y, int color)
 {
-	char	*pxl;
-
-	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
-	{
-		pxl = env->address +(y * env->size_line
-			+ x * (env->bpp / 8));
-		*(unsigned int *)pxl = color;
-	}
-}
-
-void	draw_square(int x, int y, int size, int color, t_minimap *minimap)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		put_pixel_minimap(x + i, y, color, minimap);
-		i++;
-	}
-	i = 0;
-	while (i < size)
-	{
-		put_pixel_minimap(x, y + i, color, minimap);
-		i++;
-	}
-	i = 0;
-	while (i < size)
-	{
-		put_pixel_minimap(x + size, y + i, color, minimap);
-		i++;
-	}
-	i = 0;
-	while (i < size)
-	{
-		put_pixel_minimap(x + i, y + size, color, minimap);
-		i++;
-	}
-}
-
-void	draw_map(t_game *env, t_minimap *minimap)
-{
-	char	**map;
-	int		color;
-	int		y;
+	int	start_x;
+	int	start_y;
 	int	x;
+	int	y;
+	int	tile_size;
 
+	tile_size = TILE_SIZE * MINIMAP_SCALE;
+	start_x = map_x * tile_size;
+	start_y = map_y * tile_size;
 	y = 0;
-	x = 0;
-	map = env->map.grid;
-	color = 0x0000FF;
-	while (map[y])
+	while (y < tile_size)
 	{
 		x = 0;
-		while(map[y][x])
+		while (x < tile_size)
 		{
-			if (map[y][x] == '1')
-				draw_square(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, color, minimap);
+			// Adiciona um offset de 10 pixels para margem
+			put_pixel(start_x + x + 10, start_y + y + 10, color, game);
 			x++;
 		}
 		y++;
 	}
-
 }
 
-void	init_minimap(t_minimap	*minimap, t_game *env)
+static void	draw_minimap_player(t_game *game)
 {
-	minimap->mlx = env->mlx;
-	minimap->win = mlx_new_window(env->mlx, 100, 50, "Minimap");
-	minimap->img = mlx_new_image(env->mlx, 100, 50);
-	minimap->address = mlx_get_data_addr(minimap->img, &minimap->bpp, &minimap->size_line, &minimap->endian);
-}
+	int	player_x;
+	int	player_y;
+	int	size;
+	int	x;
+	int	y;
 
-void	build_minimap(t_game *env, t_minimap *minimap)
-{
-	while (!touch(env->player.x, env->player.y, env))
+	size = 4; // Tamanho do jogador no minimapa
+	player_x = (game->player.x * MINIMAP_SCALE) - (size / 2);
+	player_y = (game->player.y * MINIMAP_SCALE) - (size / 2);
+	y = 0;
+	while (y < size)
 	{
-		put_pixel_minimap((int)env->player.x, (int)env->player.y, 0xFF0000, minimap);
-		env->player.x += cos(env->player.angle);
-		env->player.y += sin(env->player.angle);
+		x = 0;
+		while (x < size)
+		{
+			// Adiciona um offset de 10 pixels para margem
+			put_pixel(player_x + x + 10, player_y + y + 10, 0xFF0000, game);
+			x++;
+		}
+		y++;
 	}
-	draw_square(env->player.x, env->player.y, 10, 0x00FF00, minimap);
-	draw_map(env, minimap);
+}
+
+void	draw_minimap(t_game *game)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < game->map.height)
+	{
+		x = 0;
+		while (game->map.grid[y] && game->map.grid[y][x])
+		{
+			if (game->map.grid[y][x] == '1')
+				draw_minimap_tile(game, x, y, 0x404040); // Cor da parede
+			else if (game->map.grid[y][x] == '0' || ft_strchr("NSEW", game->map.grid[y][x]))
+				draw_minimap_tile(game, x, y, 0xEAEAEA); // Cor do chão
+			x++;
+		}
+		y++;
+	}
+	draw_minimap_player(game);
 }

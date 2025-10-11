@@ -1,42 +1,109 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/10 10:51:50 by ekeller-          #+#    #+#             */
+/*   Updated: 2025/10/11 16:43:23 by acesar-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
+
+static int	load_texture(t_game *game, t_texture *texture)
+{
+	texture->img = mlx_xpm_file_to_image(game->mlx, texture->path,
+			&texture->width, &texture->height);
+	if (!texture->img)
+		return (1);
+	texture->addr = mlx_get_data_addr(texture->img, &texture->bpp,
+			&texture->line_len, &texture->endian);
+	if (!texture->addr)
+		return (1);
+	return (0);
+}
+
+static int	load_all_textures(t_game *game)
+{
+	if (load_texture(game, &game->no_tex))
+		return (1);
+	if (load_texture(game, &game->so_tex))
+		return (1);
+	if (load_texture(game, &game->we_tex))
+		return (1);
+	if (load_texture(game, &game->ea_tex))
+		return (1);
+	return (0);
+}
+
+void	destroy_all_textures(t_game *game)
+{
+	if (game->no_tex.img)
+		mlx_destroy_image(game->mlx, game->no_tex.img);
+	if (game->so_tex.img)
+		mlx_destroy_image(game->mlx, game->so_tex.img);
+	if (game->we_tex.img)
+		mlx_destroy_image(game->mlx, game->we_tex.img);
+	if (game->ea_tex.img)
+		mlx_destroy_image(game->mlx, game->ea_tex.img);
+}
+
+static void	spawn(t_game *env)
+{
+	if (env->spawn_side == 'N')
+		env->player.angle = 3 * PI / 2;
+	else if (env->spawn_side == 'S')
+		env->player.angle = PI / 2;
+	else if (env->spawn_side == 'E')
+		env->player.angle = 0;
+	else if (env->spawn_side == 'W')
+		env->player.angle = PI;
+	else
+		ft_printf("spawn error\n");
+}
 
 void	init_game(t_game *env)
 {
 	init_player(&env->player);
-	// env->map.grid = get_map();
+	spawn(env);
 	env->mlx = mlx_init();
-	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "Cube3D");
+	if (!env->mlx)
+		ft_error("Falha ao inicializar a MiniLibX.");
+	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "cub3D");
+	if (!env->win)
+		ft_error("Falha ao criar a janela.");
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
-	env->address = mlx_get_data_addr(env->img, &env->bpp, &env->size_line, &env->endian);
+	if (!env->img)
+		ft_error("Falha ao criar a imagem.");
+	env->address = mlx_get_data_addr(env->img,
+			&env->bpp, &env->size_line, &env->endian);
+	if (load_all_textures(env))
+		ft_error("Erro ao carregar texturas.");
 }
 
 void	init_player(t_player *player)
 {
-	player->x = WIDTH / 2;
-	player->y = HEIGHT / 2;
-	//n=3*PI/2, s=PI/2, east=0, west=PI
-	player->angle = PI;
-	
 	player->key_down = FALSE;
 	player->key_up = FALSE;
 	player->key_left = FALSE;
 	player->key_right = FALSE;
-	player->key_esc = FALSE;
 	player->left_rotate = FALSE;
 	player->right_rotate = FALSE;
 }
 
-void	clear_image(t_game * env)
+void	clear_image(t_game *env)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
 	x = 0;
 	while (y < HEIGHT)
 	{
 		x = 0;
-		while(x < WIDTH)
+		while (x < WIDTH)
 		{
 			put_pixel(x, y, 0, env);
 			x++;
@@ -47,29 +114,13 @@ void	clear_image(t_game * env)
 
 int	close_win(t_game *env)
 {
+	destroy_all_textures(env);
 	if (env->img)
 		mlx_destroy_image(env->mlx, env->img);
 	if (env->win)
 		mlx_destroy_window(env->mlx, env->win);
 	if (env->mlx)
-	{
 		mlx_destroy_display(env->mlx);
-		free(env->mlx);
-	}
+	ft_gc_free_all();
 	exit(0);
 }
-
-// int main(void)
-// {
-// 	t_game	env;
-
-// 	init_game(&env);
-	
-// 	mlx_hook(env.win, 2, 1L<<0, key_press, &env);
-// 	mlx_hook(env.win, 3, 1L<<1, key_release, &env);
-// 	mlx_hook(env.win, 17, 0, close_win, &env);
-// 	mlx_loop_hook(env.mlx, draw_loop, &env);
-// 	mlx_loop(env.mlx);
-
-// 	return (0);
-// }

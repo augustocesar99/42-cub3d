@@ -1,21 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/10 10:51:41 by ekeller-          #+#    #+#             */
+/*   Updated: 2025/10/11 12:18:23 by acesar-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 int	key_press(int keycode, t_game *env)
 {
 	if (keycode == W)
-		env->player.key_up =FALSE;
+		env->player.key_up = TRUE;
 	if (keycode == S)
-		env->player.key_down =FALSE;
+		env->player.key_down = TRUE;
 	if (keycode == A)
-		env->player.key_left =FALSE;
+		env->player.key_left = TRUE;
 	if (keycode == D)
-		env->player.key_right =FALSE;
+		env->player.key_right = TRUE;
 	if (keycode == ESC)
 		close_win(env);
 	if (keycode == LEFT)
-		env->player.left_rotate =FALSE;
+		env->player.left_rotate = TRUE;
 	if (keycode == RIGHT)
-		env->player.right_rotate =FALSE;
+		env->player.right_rotate = TRUE;
 	return (0);
 }
 

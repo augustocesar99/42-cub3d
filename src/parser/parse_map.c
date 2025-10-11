@@ -15,6 +15,7 @@ static char	save_player_data(t_game *game, char direction, int x, int y)
 
 	game->player.x = (double)x + 0.5;
 	game->player.y = (double)y + 0.5;
+	game->spawn_side = direction;
 
 	i = 0;
 	while (i < 4)

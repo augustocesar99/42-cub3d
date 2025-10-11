@@ -6,7 +6,7 @@
 #    By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/24 18:23:17 by acesar-m          #+#    #+#              #
-#    Updated: 2025/10/04 17:12:03 by acesar-m         ###   ########.fr        #
+#    Updated: 2025/10/11 16:28:41 by acesar-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,13 @@ OBJ_DIR		= obj
 SRC			= 	main.c \
 				init.c \
 				hooks.c \
-				draw.c \
+				move.c \
+				dda.c \
+				render.c \
+				texture.c \
+				draw_background.c \
 				minimap.c \
+				draw.c \
 				error/error.c \
 				gc/gc.c \
 				parser/parser.c \
