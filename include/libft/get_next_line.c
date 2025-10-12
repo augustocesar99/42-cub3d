@@ -12,8 +12,8 @@
 
 #include "libft.h"
 
-static char	*read_line(int fd, char *buffer, char *rest);
-static char	*get_rest(char *line);
+static char	*read_line(int fd, char *buffer, char **rest);
+static char	*get_rest_and_line(char **rest);
 static char	*free_buffer(char **buffer);
 
 char	*get_next_line(int fd)
@@ -21,70 +21,69 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buffer;
 	static char	*rest;
+	char		*full_content;
 
-	if (fd == -1 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
-	line = read_line(fd, buffer, rest);
+	full_content = read_line(fd, buffer, &rest);
 	free_buffer(&buffer);
-	if (!line)
+	if (!full_content)
 	{
 		free_buffer(&rest);
 		return (NULL);
 	}
-	rest = get_rest(line);
+	line = get_rest_and_line(&rest);
 	return (line);
 }
 
-static char	*read_line(int fd, char *buffer, char *rest)
+static char	*read_line(int fd, char *buffer, char **rest)
 {
-	ssize_t	buff_size;
+	ssize_t	bytes_read;
 	char	*temp;
 
-	buff_size = 1;
-	while (buff_size > 0)
+	bytes_read = 1;
+	while (bytes_read > 0)
 	{
-		buff_size = read(fd, buffer, BUFFER_SIZE);
-		if (buff_size == -1)
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
 			return (NULL);
-		else if (buff_size == 0)
+		else if (bytes_read == 0)
 			break ;
-		buffer[buff_size] = '\0';
-		if (!rest)
-			rest = ft_calloc(1, sizeof(char));
-		temp = rest;
-		rest = ft_strjoin(temp, buffer);
-		free_buffer(&temp);
+		buffer[bytes_read] = '\0';
+		if (!*rest)
+			*rest = ft_strdup("");
+		temp = *rest;
+		*rest = ft_strjoin(temp, buffer);
+		free(temp);
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
-	return (rest);
+	return (*rest);
 }
 
-static char	*get_rest(char *line)
+static char	*get_rest_and_line(char **rest)
 {
-	int		linelen;
-	int		restlen;
-	char	*rest;
+	char	*line;
+	char	*temp_rest;
+	int		i;
 
-	linelen = 0;
-	while (line[linelen] != '\n' && line[linelen] != '\0')
-		linelen++;
-	if (line[linelen] == '\n')
-		linelen++;
-	restlen = ft_strlen(line) - linelen;
-	if (restlen > 0)
-	{
-		rest = ft_substr(line, linelen, restlen);
-		line[linelen] = '\0';
-	}
-	else
-	{
-		rest = NULL;
-	}
-	return (rest);
+	if (!*rest || **rest == '\0')
+		return (NULL);
+	i = 0;
+	while ((*rest)[i] && (*rest)[i] != '\n')
+		i++;
+	if ((*rest)[i] == '\n')
+		i++;
+	line = ft_substr(*rest, 0, i);
+	temp_rest = ft_substr(*rest, i, ft_strlen(*rest) - i);
+	free(*rest);
+	*rest = temp_rest;
+	if (**rest == '\0')
+		free_buffer(rest);
+	return (line);
 }
 
 static char	*free_buffer(char **buffer)

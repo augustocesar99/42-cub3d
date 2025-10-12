@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/12 16:38:11 by acesar-m          #+#    #+#             */
+/*   Updated: 2025/10/12 16:38:13 by acesar-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
 void	put_pixel(int x, int y, int color, t_game *env)
@@ -53,44 +65,4 @@ void draw_line(t_game *env, float start_x, int i)
 		put_pixel(i, start_y, 0x00AAFF, env);
 		start_y++;
 	}
-}
-
-int draw_loop(t_game *env)
-{
-	float		fraction;
-	float		start_x;
-	int			i;
-
-	fraction = (PI / 3) / WIDTH;
-	start_x = env->player.angle - (PI / 6);
-	i = 0;
-	move_player(env);
-	clear_image(env);
-	draw_background(env);
-	while (i < WIDTH)
-	{
-		draw_line(env, start_x, i);
-		start_x += fraction;
-		i++;
-	}
-	mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
-	return (0);
-}
-
-char	**get_map(void)
-{
-	char	**map;
-
-	map = ft_malloc(sizeof(char *)  * 10);
-	map[0] = "1111111111111";
-	map[1] = "1010000000001";
-	map[2] = "1010000000001";
-	map[3] = "1000010000001";
-	map[4] = "1000000000001";
-	map[5] = "1000000000001";
-	map[6] = "1000100000001";
-	map[7] = "1000000000001";
-	map[8] = "1111111111111";
-	map[9] = NULL;
-	return (map);
 }

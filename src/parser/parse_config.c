@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_config.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/12 16:38:43 by acesar-m          #+#    #+#             */
+/*   Updated: 2025/10/12 16:39:30 by acesar-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static char	*skip_spaces(char *line)
@@ -63,7 +75,7 @@ static void	parse_texture_path(t_game *game, char *line, t_texture *tex_struct)
 		ft_error("Erro de alocação para o caminho da textura.");
 
 	int len = ft_strlen(temp);
-	while (len > 0 && (temp[len-1] == ' ' || temp[len-1] == '\t'))
+	while (len > 0 && (temp[len-1] == ' ' || temp[len-1] == '\t' || temp[len-1] == '\n'))
 	{
 		temp[len-1] = '\0';
 		len--;

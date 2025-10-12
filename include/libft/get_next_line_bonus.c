@@ -21,6 +21,7 @@ char	*get_next_line_bonus(int fd)
 	char		*line;
 	char		*buffer;
 	static char	*rest[FD_LEN];
+	char		*temp_rest;
 
 	if (fd == -1 || BUFFER_SIZE <= 0 || fd > FD_LEN)
 		return (NULL);
@@ -30,8 +31,13 @@ char	*get_next_line_bonus(int fd)
 	line = read_line(fd, buffer, rest[fd]);
 	free_buffer(&buffer);
 	if (!line)
-		return (free_buffer(&rest[fd]));
-	rest[fd] = get_rest(line);
+	{
+		free_buffer(&rest[fd]);
+		return (NULL);
+	}
+	temp_rest = get_rest(line);
+	free(rest[fd]);
+	rest[fd] = temp_rest;
 	return (line);
 }
 
@@ -65,6 +71,7 @@ static char	*get_rest(char *line)
 	int		linelen;
 	int		restlen;
 	char	*rest;
+	char	*temp_line;
 
 	linelen = 0;
 	while (line[linelen] != '\n' && line[linelen] != '\0')
@@ -75,7 +82,10 @@ static char	*get_rest(char *line)
 	if (restlen > 0)
 	{
 		rest = ft_substr(line, linelen, restlen);
+		temp_line = ft_substr(line, 0, linelen);
+		ft_memcpy(line, temp_line, linelen);
 		line[linelen] = '\0';
+		free(temp_line);
 	}
 	else
 		rest = NULL;

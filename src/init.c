@@ -6,7 +6,7 @@
 /*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 10:51:50 by ekeller-          #+#    #+#             */
-/*   Updated: 2025/10/11 16:43:23 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/10/12 14:14:47 by acesar-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ static void	spawn(t_game *env)
 
 void	init_game(t_game *env)
 {
+	env->player.x *= TILE_SIZE;
+	env->player.y *= TILE_SIZE;
+
 	init_player(&env->player);
 	spawn(env);
 	env->mlx = mlx_init();

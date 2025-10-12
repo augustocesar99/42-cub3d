@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/12 16:38:34 by acesar-m          #+#    #+#             */
+/*   Updated: 2025/10/12 16:40:48 by acesar-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static char	save_player_data(t_game *game, char direction, int x, int y)
@@ -33,13 +45,12 @@ static char	save_player_data(t_game *game, char direction, int x, int y)
 	return ('0');
 }
 
-static char *validate_and_clean_line(t_game *game, char *raw_line, int y)
+static char	*validate_and_clean_line(t_game *game, char *raw_line, int y)
 {
-	char *clean_line;
-	int x;
-	int len;
+	char	*clean_line;
+	int		x;
+	int		len;
 
-	// Remover \n e \r do final da linha
 	len = ft_strlen(raw_line);
 	if (len > 0 && raw_line[len - 1] == '\n') {
 		raw_line[len - 1] = '\0';
@@ -72,15 +83,12 @@ static char *validate_and_clean_line(t_game *game, char *raw_line, int y)
 
 static t_bool is_unsafe_neighbor(t_game *game, int y, int x)
 {
-	// Verificar se está fora dos limites do mapa
 	if (y < 0 || y >= game->map.height)
 		return (TRUE);
-	
-	// Verificar se a linha existe e se x está dentro dos limites
-	if (!game->map.grid[y] || x < 0 || x >= (int)ft_strlen(game->map.grid[y]))
+
+		if (!game->map.grid[y] || x < 0 || x >= (int)ft_strlen(game->map.grid[y]))
 		return (TRUE);
-	
-	// Verificar se é espaço vazio (considerado como fora do mapa)
+
 	if (game->map.grid[y][x] == ' ')
 		return (TRUE);
 	
@@ -106,11 +114,14 @@ void validate_map_integrity(t_game *game)
 				if (y == 0 || y == game->map.height - 1 || x == 0 || 
 					x == (int)ft_strlen(game->map.grid[y]) - 1)
 					ft_error("[MAP ERROR] Posição do jogador ou espaço vazio na borda do mapa.");
-				
 				if (is_unsafe_neighbor(game, y, x + 1) ||
 					is_unsafe_neighbor(game, y, x - 1) ||
 					is_unsafe_neighbor(game, y + 1, x) ||
-					is_unsafe_neighbor(game, y - 1, x))
+					is_unsafe_neighbor(game, y - 1, x) ||
+					is_unsafe_neighbor(game, y - 1, x - 1) ||
+					is_unsafe_neighbor(game, y - 1, x + 1) ||
+					is_unsafe_neighbor(game, y + 1, x - 1) ||
+					is_unsafe_neighbor(game, y + 1, x + 1))
 				{
 					ft_error("[MAP ERROR] O mapa não está completamente cercado por paredes.");
 				}

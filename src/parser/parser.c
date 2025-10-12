@@ -1,18 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/12 16:38:25 by acesar-m          #+#    #+#             */
+/*   Updated: 2025/10/12 16:40:58 by acesar-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-static void check_all_elements_found(t_game *game)
+static void	check_all_elements_found(t_game *game)
 {
 	if (game->parse.elements_found != ALL_ELEMENTS)
 	ft_error("Configuração incompleta: faltam elementos (NO, SO, WE, EA, F ou C).");
 }
 
-static void process_line(t_game *game, char *line)
+static void	process_line(t_game *game, char *line)
 {
 	while (*line && (*line == ' ' || *line == '\t'))
 		line++;
 
 	if (ft_strlen(line) == 0 || (*line == '\n' && ft_strlen(line) == 1))
+	{
+		if (game->parse.map_started)
+			ft_error("[MAP ERROR] Linha vazia encontrada no meio do mapa.");
 		return;
+	}
 
 	if (game->parse.elements_found != ALL_ELEMENTS)
 	{
@@ -37,7 +53,7 @@ void	parse_scene_file(t_game *game, char *filepath)
 			break;
 		game->parse.line_number++;
 		process_line(game, line);
-		ft_free(line);
+		free(line);
 	}
 	close(game->parse.fd);
 	game->parse.fd = -1;
