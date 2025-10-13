@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 10:52:29 by ekeller-          #+#    #+#             */
-/*   Updated: 2025/10/12 16:37:29 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/10/13 13:25:23 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../include/cub3d.h"
 
@@ -26,8 +26,8 @@ void	rotate(t_game *env)
 
 void	move(t_game *env)
 {
-	double cos_angle;
-	double sin_angle;
+	double	cos_angle;
+	double	sin_angle;
 
 	cos_angle = cos(env->player.angle);
 	sin_angle = sin(env->player.angle);
@@ -62,9 +62,21 @@ void	move_player(t_game *env)
 	old_y = env->player.y;
 	rotate(env);
 	move(env);
-	if (map_wall(env, (int)env->player.x / TILE_SIZE, (int)env->player.y / TILE_SIZE))
+	if (map_wall(env, env->player.x / TILE_SIZE, env->player.y / TILE_SIZE))
 	{
 		env->player.x = old_x;
 		env->player.y = old_y;
+	}
+}
+
+void	put_pixel(int x, int y, int color, t_game *env)
+{
+	char	*pxl;
+
+	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+	{
+		pxl = env->address +(y * env->size_line
+				+ x * (env->bpp / 8));
+		*(unsigned int *)pxl = color;
 	}
 }

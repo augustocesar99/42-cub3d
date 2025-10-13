@@ -6,7 +6,7 @@
 #    By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/24 18:23:17 by acesar-m          #+#    #+#              #
-#    Updated: 2025/10/13 11:29:51 by ekeller-         ###   ########.fr        #
+#    Updated: 2025/10/13 12:48:33 by ekeller-         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -27,13 +27,13 @@ SRC			= 	main.c \
 				texture.c \
 				draw_background.c \
 				minimap.c \
-				draw.c \
 				error/error.c \
 				gc/gc.c \
 				parser/parser.c \
 				parser/parse_config.c \
 				parser/parse_map.c \
-				parser/ft_strdup_cub.c
+				parser/ft_strdup_cub.c \
+				texture_helper.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS		= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))

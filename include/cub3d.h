@@ -6,7 +6,7 @@
 /*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/13 11:27:42 by ekeller-         ###   ########.fr       */
+/*   Updated: 2025/10/13 12:56:01 by ekeller-         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -185,56 +185,58 @@ typedef struct s_drawcol
 // PROTOTYPES
 
 // error/error.c
-void	ft_error(char *msg);
-void	check_file_extension(char *filename);
+void		ft_error(char *msg);
+void		check_file_extension(char *filename);
 
 // gc/gc.c
-void	*ft_malloc(size_t size);
-void	ft_gc_free_all(void);
-void	ft_gc_exit(int status);
-void	ft_free(void *ptr);
-void	ft_free_split(char **split);
+void		*ft_malloc(size_t size);
+void		ft_gc_free_all(void);
+void		ft_gc_exit(int status);
+void		ft_free(void *ptr);
+void		ft_free_split(char **split);
 
 // parser/parser.c
-void	parse_scene_file(t_game *game, char *filepath);
-int		extract_element(t_game *game, char *line);
-void	read_map_line(t_game *game, char *raw_line);
-void	validate_map_integrity(t_game *game);
-char	*ft_strdup_cub(const char *str);
+void		parse_scene_file(t_game *game, char *filepath);
+int			extract_element(t_game *game, char *line);
+void		read_map_line(t_game *game, char *raw_line);
+void		validate_map_integrity(t_game *game);
+char		*ft_strdup_cub(const char *str);
 
 // minimap.c
-void	draw_minimap(t_game *game);
+void		draw_minimap(t_game *game);
 
 // init.c
-void	init_game(t_game *game);
-void	init_player(t_player *player);
-void	clear_image(t_game *game);
-int		close_win(t_game *game);
+void		init_game(t_game *game);
+void		init_player(t_player *player);
+void		clear_image(t_game *game);
+int			close_win(t_game *game);
 
 // hooks.c
-int		key_release(int keycode, t_game *game);
-int		key_press(int keycode, t_game *game);
+int			key_release(int keycode, t_game *game);
+int			key_press(int keycode, t_game *game);
 
 // move.c
-void	move_player(t_game *game);
+void		move_player(t_game *game);
+void		put_pixel(int x, int y, int color, t_game *game);
 
 // draw_background.c
-void	draw_background(t_game *e);
-int		map_wall(t_game *e, int mx, int my);
-
-// draw.c
-void	put_pixel(int x, int y, int color, t_game *game);
+void		draw_background(t_game *e);
+int			map_wall(t_game *e, int mx, int my);
 
 // dda.c
-void	make_camera(t_game *e);
-void	ray_setup(t_game *e, t_ray *r, int x);
-void	ray_dda(t_game *e, t_ray *r);
+void		make_camera(t_game *e);
+void		ray_setup(t_game *e, t_ray *r, int x);
+void		ray_dda(t_game *e, t_ray *r);
 
 // render.c
-int		render_loop(t_game *e);
+int			render_loop(t_game *e);
 
 // texture.c
 t_texture	*pick_tex(t_game *e, t_ray *r);
 void		draw_textured_column(t_game *e, int x, t_drawcol *d, t_texture *tx);
+
+// texture_helper.c
+int			load_all_textures(t_game *game);
+void		destroy_all_textures(t_game *game);
 
 #endif

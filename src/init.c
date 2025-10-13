@@ -1,54 +1,16 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 10:51:50 by ekeller-          #+#    #+#             */
-/*   Updated: 2025/10/12 14:14:47 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/10/13 12:45:52 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../include/cub3d.h"
-
-static int	load_texture(t_game *game, t_texture *texture)
-{
-	texture->img = mlx_xpm_file_to_image(game->mlx, texture->path,
-			&texture->width, &texture->height);
-	if (!texture->img)
-		return (1);
-	texture->addr = mlx_get_data_addr(texture->img, &texture->bpp,
-			&texture->line_len, &texture->endian);
-	if (!texture->addr)
-		return (1);
-	return (0);
-}
-
-static int	load_all_textures(t_game *game)
-{
-	if (load_texture(game, &game->no_tex))
-		return (1);
-	if (load_texture(game, &game->so_tex))
-		return (1);
-	if (load_texture(game, &game->we_tex))
-		return (1);
-	if (load_texture(game, &game->ea_tex))
-		return (1);
-	return (0);
-}
-
-void	destroy_all_textures(t_game *game)
-{
-	if (game->no_tex.img)
-		mlx_destroy_image(game->mlx, game->no_tex.img);
-	if (game->so_tex.img)
-		mlx_destroy_image(game->mlx, game->so_tex.img);
-	if (game->we_tex.img)
-		mlx_destroy_image(game->mlx, game->we_tex.img);
-	if (game->ea_tex.img)
-		mlx_destroy_image(game->mlx, game->ea_tex.img);
-}
 
 static void	spawn(t_game *env)
 {
@@ -68,7 +30,6 @@ void	init_game(t_game *env)
 {
 	env->player.x *= TILE_SIZE;
 	env->player.y *= TILE_SIZE;
-
 	init_player(&env->player);
 	spawn(env);
 	env->mlx = mlx_init();
@@ -123,7 +84,10 @@ int	close_win(t_game *env)
 	if (env->win)
 		mlx_destroy_window(env->mlx, env->win);
 	if (env->mlx)
+	{
 		mlx_destroy_display(env->mlx);
+		free(env->mlx);
+	}
 	ft_gc_free_all();
 	exit(0);
 }
