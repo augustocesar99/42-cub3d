@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/11 16:25:36 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:27:42 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -200,6 +200,7 @@ void	parse_scene_file(t_game *game, char *filepath);
 int		extract_element(t_game *game, char *line);
 void	read_map_line(t_game *game, char *raw_line);
 void	validate_map_integrity(t_game *game);
+char	*ft_strdup_cub(const char *str);
 
 // minimap.c
 void	draw_minimap(t_game *game);

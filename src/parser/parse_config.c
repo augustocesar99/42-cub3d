@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_config.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:38:43 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/12 16:39:30 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/10/13 11:28:32 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
@@ -70,7 +70,7 @@ static void	parse_texture_path(t_game *game, char *line, t_texture *tex_struct)
 	if (*path_end == '\0')
 		ft_error("Caminho da textura vazio.");
 
-	temp = ft_strdup(path_end);
+	temp = ft_strdup_cub(path_end);
 	if (!temp)
 		ft_error("Erro de alocação para o caminho da textura.");
 

@@ -1,26 +1,24 @@
 /******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strdup_cub.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 14:21:51 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/13 11:24:42 by ekeller-         ###   ########.fr       */
+/*   Created: 2025/10/13 11:26:50 by ekeller-          #+#    #+#             */
+/*   Updated: 2025/10/13 11:27:01 by ekeller-         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
-#include "libft.h"
+#include "cub3d.h"
 
-char	*ft_strdup(const char *str);
-
-char	*ft_strdup(const char *str)
+char	*ft_strdup_cub(const char *str)
 {
 	size_t	len;
 	char	*copy;
 
 	len = ft_strlen(str) + 1;
-	copy = malloc((len) * sizeof(char));
+	copy = ft_malloc((len) * sizeof(char));
 	if (copy == NULL)
 		return (NULL);
 	ft_strlcpy(copy, str, len);

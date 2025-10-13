@@ -1,0 +1,16 @@
+NO ./maps/textures/north.xpm
+SO ./maps/textures/south.xpm
+WE ./maps/textures/west.xpm
+EA ./maps/textures/east.xpm
+
+F 50,50,50
+C 180,180,200
+
+111111111
+110000001
+100000001
+100010001
+100000001
+1000N0001
+100000001
+111111111
