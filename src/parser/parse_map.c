@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:38:34 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/12 16:40:48 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/10/13 10:26:09 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
@@ -86,7 +86,7 @@ static t_bool is_unsafe_neighbor(t_game *game, int y, int x)
 	if (y < 0 || y >= game->map.height)
 		return (TRUE);
 
-		if (!game->map.grid[y] || x < 0 || x >= (int)ft_strlen(game->map.grid[y]))
+	if (!game->map.grid[y] || x < 0 || x >= (int)ft_strlen(game->map.grid[y]))
 		return (TRUE);
 
 	if (game->map.grid[y][x] == ' ')
