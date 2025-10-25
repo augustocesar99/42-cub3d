@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/24 18:23:17 by acesar-m          #+#    #+#              #
-#    Updated: 2025/10/13 12:48:33 by ekeller-         ###   ########.fr        #
+#    Updated: 2025/10/25 16:07:38 by acesar-m         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 NAME		= cub3D
 
@@ -29,9 +29,13 @@ SRC			= 	main.c \
 				minimap.c \
 				error/error.c \
 				gc/gc.c \
+				gc/gc_utils.c \
 				parser/parser.c \
 				parser/parse_config.c \
+				parser/parse_config_helper.c\
+				parser/parse_map_utils.c \
 				parser/parse_map.c \
+				parser/parse_map_helper.c \
 				parser/ft_strdup_cub.c \
 				texture_helper.c
 

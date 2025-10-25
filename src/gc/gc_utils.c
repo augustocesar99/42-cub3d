@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   gc_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 14:21:51 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/25 16:59:37 by acesar-m         ###   ########.fr       */
+/*   Created: 2025/10/25 15:19:18 by acesar-m          #+#    #+#             */
+/*   Updated: 2025/10/25 15:19:37 by acesar-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-char	*ft_strdup(const char *str);
-
-char	*ft_strdup(const char *str)
+void	ft_free_split(char **split)
 {
-	size_t	len;
-	char	*copy;
+	int	i;
 
-	len = ft_strlen(str) + 1;
-	copy = malloc((len) * sizeof(char));
-	if (copy == NULL)
-		return (NULL);
-	ft_strlcpy(copy, str, len);
-	return (copy);
+	if (!split)
+		return ;
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
+void	ft_gc_exit(int status)
+{
+	ft_gc_free_all();
+	exit(status);
 }

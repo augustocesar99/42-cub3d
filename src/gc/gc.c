@@ -12,9 +12,10 @@
 
 #include "cub3d.h"
 
-static t_malloc	**get_gc(void)
+static	t_malloc	**get_gc(void)
 {
 	static t_malloc	*g_mallocs = NULL;
+
 	return (&g_mallocs);
 }
 
@@ -47,7 +48,7 @@ void	ft_free(void *ptr)
 	t_malloc	*prev;
 
 	if (!ptr)
-		return;
+		return ;
 	gc = get_gc();
 	curr = *gc;
 	prev = NULL;
@@ -61,7 +62,7 @@ void	ft_free(void *ptr)
 				*gc = curr->next;
 			free(curr->ptr);
 			free(curr);
-			return;
+			return ;
 		}
 		prev = curr;
 		curr = curr->next;
@@ -84,26 +85,4 @@ void	ft_gc_free_all(void)
 		curr = tmp;
 	}
 	*gc = NULL;
-}
-
-void	ft_free_split(char **split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
-
-void	ft_gc_exit(int status)
-{
-	ft_gc_free_all();
-	exit(status);
 }

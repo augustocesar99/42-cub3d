@@ -1,19 +1,17 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/13 12:56:01 by ekeller-         ###   ########.fr       */
+/*   Updated: 2025/10/25 17:04:02 by acesar-m         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-
-// INCLUDES
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -22,8 +20,6 @@
 # include <math.h>
 # include "mlx.h"
 # include "libft.h"
-
-// DEFINES
 
 // Configurações de tela e renderização
 # define WIDTH 1280
@@ -66,7 +62,6 @@ typedef enum e_bool
 	TRUE
 }	t_bool;
 
-// Garbage Collector
 typedef struct s_malloc
 {
 	void				*ptr;
@@ -75,10 +70,10 @@ typedef struct s_malloc
 
 typedef struct	s_rgb
 {
-	int r;
-	int g;
-	int b;
-	int value;
+	int	r;
+	int	g;
+	int	b;
+	int	value;
 }	t_rgb;
 
 typedef struct	s_texture
@@ -182,61 +177,110 @@ typedef struct s_drawcol
 	double	tex_pos;
 }	t_drawcol;
 
-// PROTOTYPES
+typedef struct s_validate_data
+{
+	char	*clean;
+	char	c;
+	int		x;
+	int		y;
+}	t_validate_data;
 
-// error/error.c
+// ERROR HANDLING
+
 void		ft_error(char *msg);
 void		check_file_extension(char *filename);
 
-// gc/gc.c
+// GARBAGE COLLECTOR
+
 void		*ft_malloc(size_t size);
-void		ft_gc_free_all(void);
-void		ft_gc_exit(int status);
 void		ft_free(void *ptr);
 void		ft_free_split(char **split);
+void		ft_gc_free_all(void);
+void		ft_gc_exit(int status);
 
-// parser/parser.c
+// PARSER
+
+// parse_scene_file
 void		parse_scene_file(t_game *game, char *filepath);
+
+// parse_config.c
+char		*skip_spaces(char *line);
+void		parse_rgb(t_game *game, char *str, t_rgb *color_struct);
+void		parse_texture_path(t_game *game, char *line, t_texture *tex_struct);
 int			extract_element(t_game *game, char *line);
+
+// parse_config_helper.c
+void		validate_rgb_count(char **rgb_values);
+void		set_rgb_component(t_rgb *color, int index, long val,
+				char **rgb_values);
+void		set_element_bit(t_game *game, int mask, char *identifier);
+int			check_texture(t_game *game, char *line, char *str_content);
+int			check_color(t_game *game, char *line, char *str_content);
+
+// parse_map.c
 void		read_map_line(t_game *game, char *raw_line);
 void		validate_map_integrity(t_game *game);
+
+// parse_map_helper.c
+t_bool		is_on_border(t_game *game, int y, int x);
+t_bool		check_all_neighbors(t_game *game, int y, int x);
+void		validate_position(t_game *game, int y, int x);
+void		remove_line_endings(char *line, int *len);
+
+// parse_map_utils.c
+void		init_validate_data(t_validate_data *data, char *raw, int y);
+t_bool		is_unsafe_neighbor(t_game *game, int y, int x);
+
+// ft_strdup_cub.c
 char		*ft_strdup_cub(const char *str);
 
-// minimap.c
-void		draw_minimap(t_game *game);
+// INITIALIZATION
 
-// init.c
 void		init_game(t_game *game);
 void		init_player(t_player *player);
 void		clear_image(t_game *game);
 int			close_win(t_game *game);
 
-// hooks.c
-int			key_release(int keycode, t_game *game);
-int			key_press(int keycode, t_game *game);
+// RENDERING
 
-// move.c
-void		move_player(t_game *game);
-void		put_pixel(int x, int y, int color, t_game *game);
+// render.c
+int			render_loop(t_game *e);
 
 // draw_background.c
 void		draw_background(t_game *e);
 int			map_wall(t_game *e, int mx, int my);
 
-// dda.c
+// dda.c (Raycasting)
 void		make_camera(t_game *e);
 void		ray_setup(t_game *e, t_ray *r, int x);
 void		ray_dda(t_game *e, t_ray *r);
 
-// render.c
-int			render_loop(t_game *e);
+// TEXTURES
 
 // texture.c
 t_texture	*pick_tex(t_game *e, t_ray *r);
-void		draw_textured_column(t_game *e, int x, t_drawcol *d, t_texture *tx);
+void		draw_textured_column(t_game *e, int x, t_drawcol *d,
+				t_texture *tx);
 
 // texture_helper.c
 int			load_all_textures(t_game *game);
 void		destroy_all_textures(t_game *game);
+
+// PLAYER CONTROLS
+
+// hooks.c
+int			key_press(int keycode, t_game *game);
+int			key_release(int keycode, t_game *game);
+
+// move.c
+void		move_player(t_game *game);
+
+// UTILITIES
+
+// minimap.c
+void		draw_minimap(t_game *game);
+
+// move.c (pixel utility)
+void		put_pixel(int x, int y, int color, t_game *game);
 
 #endif
