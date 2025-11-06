@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/10 10:51:50 by ekeller-          #+#    #+#             */
-/*   Updated: 2025/10/13 12:45:52 by ekeller-         ###   ########.fr       */
+/*   Created: 2025/11/06 11:20:06 by ekeller-@st       #+#    #+#             */
+/*   Updated: 2025/11/06 13:02:26 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
@@ -34,17 +34,17 @@ void	init_game(t_game *env)
 	spawn(env);
 	env->mlx = mlx_init();
 	if (!env->mlx)
-		ft_error("Falha ao inicializar a MiniLibX.");
+		ft_error("MiniLibX failed.");
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "cub3D");
 	if (!env->win)
-		ft_error("Falha ao criar a janela.");
+		ft_error("Window failed.");
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
 	if (!env->img)
-		ft_error("Falha ao criar a imagem.");
+		ft_error("Image failed.");
 	env->address = mlx_get_data_addr(env->img,
 			&env->bpp, &env->size_line, &env->endian);
 	if (load_all_textures(env))
-		ft_error("Erro ao carregar texturas.");
+		ft_error("Error loading textures.");
 }
 
 void	init_player(t_player *player)

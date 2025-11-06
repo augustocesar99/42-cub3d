@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 10:52:29 by ekeller-          #+#    #+#             */
-/*   Updated: 2025/10/25 16:56:59 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/06 12:17:49 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,63 @@ void	move(t_game *env)
 	}
 }
 
+// void	move_player(t_game *env)
+// {
+// 	float	old_x;
+// 	float	old_y;
+
+// 	old_x = env->player.x;
+// 	old_y = env->player.y;
+// 	rotate(env);
+// 	move(env);
+// 	if (map_wall(env, env->player.x / TILE_SIZE, env->player.y / TILE_SIZE))
+// 	{
+// 		env->player.x = old_x;
+// 		env->player.y = old_y;
+// 	}
+// }
+
+static int	check_collision_with_margin(t_game *env, float x, float y)
+{
+    int	margin;
+
+    margin = 10;
+    if (map_wall(env, (x + margin) / TILE_SIZE, (y + margin) / TILE_SIZE))
+        return (1);
+    if (map_wall(env, (x - margin) / TILE_SIZE, (y - margin) / TILE_SIZE))
+        return (1);
+    if (map_wall(env, (x + margin) / TILE_SIZE, (y - margin) / TILE_SIZE))
+        return (1);
+    if (map_wall(env, (x - margin) / TILE_SIZE, (y + margin) / TILE_SIZE))
+        return (1);
+    return (0);
+}
+
+//first if check if player is moving diagonally with both y and x changing.
+//second if checks movement in the x axis(n and s walls)
+//third if checks movement on the y axis
 void	move_player(t_game *env)
 {
-	float	old_x;
-	float	old_y;
+    float	old_x;
+    float	old_y;
+    float	new_x;
+    float	new_y;
 
-	old_x = env->player.x;
-	old_y = env->player.y;
-	rotate(env);
-	move(env);
-	if (map_wall(env, env->player.x / TILE_SIZE, env->player.y / TILE_SIZE))
-	{
-		env->player.x = old_x;
-		env->player.y = old_y;
-	}
+    old_x = env->player.x;
+    old_y = env->player.y;
+    rotate(env);
+    move(env);
+    new_x = env->player.x;
+    new_y = env->player.y;
+    if (check_collision_with_margin(env, new_x, new_y))
+    {
+        env->player.x = old_x;
+        env->player.y = old_y;
+        if (!check_collision_with_margin(env, new_x, old_y))
+            env->player.x = new_x;
+        else if (!check_collision_with_margin(env, old_x, new_y))
+            env->player.y = new_y;
+    }
 }
 
 void	put_pixel(int x, int y, int color, t_game *env)

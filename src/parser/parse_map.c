@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:38:34 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/25 16:03:54 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/06 13:00:57 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	save_player_data(t_game *game, char direction, int x, int y)
 	int			i;
 
 	if (game->player.dir_x || game->player.dir_y)
-		ft_error("[MAP ERROR] Mapa deve ter apenas uma posicao inicial.");
+		ft_error("[MAP ERROR] Map must have only one initial position.");
 	game->player.x = (double)x + 0.5;
 	game->player.y = (double)y + 0.5;
 	game->spawn_side = direction;
@@ -47,7 +47,7 @@ static void	process_char(t_game *game, t_validate_data *data)
 		data->clean[data->x] = save_player_data(game, data->c,
 				data->x, data->y);
 	else
-		ft_error("[MAP ERROR] Caractere invalido encontrado no mapa.");
+		ft_error("[MAP ERROR] Invalid character found in map.");
 }
 
 static char	*validate_and_clean_line(t_game *game, char *raw_line, int y)
@@ -73,7 +73,7 @@ void	validate_map_integrity(t_game *game)
 	int	x;
 
 	if (game->player.dir_x == 0 && game->player.dir_y == 0)
-		ft_error("[MAP ERROR] Mapa deve ter posicao inicial de jogador.");
+		ft_error("[MAP ERROR] Map must include initil player position.");
 	y = 0;
 	while (y < game->map.height && game->map.grid[y])
 	{
@@ -97,7 +97,7 @@ void	read_map_line(t_game *game, char *raw_line)
 	int		i;
 
 	if (game->parse.elements_found != ALL_ELEMENTS)
-		ft_error("[PARSE ERROR] Configuracoes insuficientes antes do mapa.");
+		ft_error("[PARSE ERROR] Insufficient configurations before map.");
 	game->parse.map_started = 1;
 	clean_line = validate_and_clean_line(game, raw_line, game->map.height);
 	new_height = game->map.height + 1;

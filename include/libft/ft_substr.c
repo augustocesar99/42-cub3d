@@ -3,37 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/12 19:35:19 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/24 11:24:56 by acesar-m         ###   ########.fr       */
+/*   Created: 2024/10/23 12:34:31 by jcosta-b          #+#    #+#             */
+/*   Updated: 2024/10/24 16:54:13 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+// Allocate (with malloc) and return a substring from string 's'.
+// The substring started at 'start' and has max length as 'len'.
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*result;
-	size_t	str_size;
+	char			*substr;
+	unsigned int	i;
+	size_t			s_len;
+	size_t			subs_len;
 
-	if (!s)
+	if (s == NULL)
 		return (NULL);
-	str_size = ft_strlen(s);
-	if (start > str_size)
-	{
-		len = 1;
-		start = 0;
-	}
-	else if (start + len > str_size)
-		len = str_size - start + 1;
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		return (ft_strdup(""));
+	if (s_len - start < len)
+		subs_len = s_len - start;
 	else
-		len = len +1;
-	result = malloc(len);
-	if (!result)
+		subs_len = len;
+	substr = (char *)malloc((subs_len + 1) * sizeof(char));
+	if (substr == NULL)
 		return (NULL);
-	ft_strlcpy(result, s + start, len);
-	return (result);
+	i = 0;
+	while (i < subs_len)
+	{
+		substr[i] = s[start + i];
+		i++;
+	}
+	substr[i] = '\0';
+	return (substr);
 }

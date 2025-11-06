@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_config.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:38:43 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/25 15:34:04 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/06 12:57:42 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	parse_rgb(t_game *game, char *str, t_rgb *color_struct)
 	(void)game;
 	rgb_values = ft_split(str, ',');
 	if (!rgb_values)
-		ft_error("Erro de alocação ao processar cor RGB.");
+		ft_error("Allocation error while processing RGB color.");
 	validate_rgb_count(rgb_values);
 	i = -1;
 	while (rgb_values[++i])
@@ -46,10 +46,10 @@ void	parse_texture_path(t_game *game, char *line, t_texture *tex_struct)
 	(void)game;
 	path_end = skip_spaces(line);
 	if (*path_end == '\0')
-		ft_error("Caminho da textura vazio.");
+		ft_error("Empty texture path.");
 	temp = ft_strdup_cub(path_end);
 	if (!temp)
-		ft_error("Erro de alocação para o caminho da textura.");
+		ft_error("Allocation error in texture path.");
 	len = ft_strlen(temp);
 	while (len > 0 && (temp[len - 1] == ' ' || temp[len - 1] == '\t'
 			|| temp[len - 1] == '\n'))

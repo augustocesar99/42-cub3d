@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:00:00 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/25 16:05:22 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/06 12:58:37 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ t_bool	check_all_neighbors(t_game *game, int y, int x)
 void	validate_position(t_game *game, int y, int x)
 {
 	if (is_on_border(game, y, x))
-		ft_error("[MAP ERROR] Posicao do jogador ou espaco vazio na borda.");
+		ft_error("[MAP ERROR] Players position or empty space at the border.");
 	if (check_all_neighbors(game, y, x))
-		ft_error("[MAP ERROR] Mapa nao esta cercado por paredes.");
+		ft_error("[MAP ERROR] Map not surrounded by walls.");
 }
 
 void	remove_line_endings(char *line, int *len)

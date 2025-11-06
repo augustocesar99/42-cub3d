@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_config_helper.c                             :+:      :+:    :+:   */
+/*   parse_config_helper.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 15:31:08 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/25 15:34:07 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/06 12:56:31 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	validate_rgb_count(char **rgb_values)
 	if (i != 3)
 	{
 		ft_free_split(rgb_values);
-		ft_error("Cor RGB deve ter exatamente 3 valores (R,G,B).");
+		ft_error("RGB color must have exactly 3 values (R,G,B).");
 	}
 }
 
@@ -31,7 +31,7 @@ void	set_rgb_component(t_rgb *color, int index, long val, char **rgb_values)
 	if (val < 0 || val > 255)
 	{
 		ft_free_split(rgb_values);
-		ft_error("Valor RGB fora do intervalo [0, 255].");
+		ft_error("RGB value outside interval [0, 255].");
 	}
 	if (index == 0)
 		color->r = (int)val;
@@ -45,7 +45,7 @@ void	set_element_bit(t_game *game, int mask, char *identifier)
 {
 	(void)identifier;
 	if (game->parse.elements_found & mask)
-		ft_error("Elemento de configuração duplicado.");
+		ft_error("Configuration element duplicated.");
 	game->parse.elements_found |= mask;
 }
 

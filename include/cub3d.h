@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 18:23:23 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/25 17:04:02 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/06 11:34:09 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 
 // Configurações do jogador e movimento
 # define PI 3.14159265359
-# define SPEED 3
-# define ANGLE_SPEED 0.06
+# define SPEED 1.1
+# define ANGLE_SPEED 0.02
 
 // Teclas
 # define W 119
@@ -68,7 +68,7 @@ typedef struct s_malloc
 	struct s_malloc		*next;
 }	t_malloc;
 
-typedef struct	s_rgb
+typedef struct s_rgb
 {
 	int	r;
 	int	g;
@@ -76,7 +76,7 @@ typedef struct	s_rgb
 	int	value;
 }	t_rgb;
 
-typedef struct	s_texture
+typedef struct s_texture
 {
 	char	*path;
 	void	*img;
@@ -97,14 +97,14 @@ typedef struct s_dir
 	double	plane_y;
 }	t_dir;
 
-typedef struct	s_map
+typedef struct s_map
 {
 	char	**grid;
 	int		width;
 	int		height;
 }	t_map;
 
-typedef struct	s_player
+typedef struct s_player
 {
 	double	x;
 	double	y;
@@ -129,7 +129,7 @@ typedef struct s_parse
 	int		map_started;
 }	t_parse;
 
-typedef struct	s_game
+typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
@@ -150,7 +150,7 @@ typedef struct	s_game
 	t_parse		parse;
 }	t_game;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
 	double	dir_x;
 	double	dir_y;

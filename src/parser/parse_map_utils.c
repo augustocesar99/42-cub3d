@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:04:22 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/25 16:05:26 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/06 12:59:03 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_validate_data(t_validate_data *data, char *raw, int y)
 	remove_line_endings(raw, &len);
 	data->clean = (char *)ft_malloc(len + 1);
 	if (!data->clean)
-		ft_error("[ALLOC ERROR] Falha na alocacao da linha do mapa.");
+		ft_error("[ALLOC ERROR] Failed allocation in map line.");
 	data->x = 0;
 	data->y = y;
 }
