@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gc_utils.c                                         :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/25 15:19:18 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/11/06 16:17:41 by ekeller-@st      ###   ########.fr       */
+/*   Created: 2025/11/06 16:22:48 by ekeller-@st       #+#    #+#             */
+/*   Updated: 2025/11/06 17:26:19 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-void	ft_free_split(char **split)
+char	*get_line(char *stored, char *buf)
 {
-	int	i;
+	char	*temp;
 
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
+	if (stored == NULL)
+		stored = ft_strjoin("", buf);
+	else
 	{
-		free(split[i]);
-		i++;
+		temp = stored;
+		stored = ft_strjoin(stored, buf);
+		free(temp);
 	}
-	free(split);
-}
-
-void	ft_gc_exit(int status)
-{
-	gnl_clear_all_fds();
-	ft_gc_free_all();
-	exit(status);
+	return (stored);
 }

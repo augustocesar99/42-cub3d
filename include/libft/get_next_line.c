@@ -1,31 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:55:23 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/04 11:05:11 by jcosta-b         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:22:59 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static char	*get_line(char *stored, char *buf)
-{
-	char	*temp;
-
-	if (stored == NULL)
-		stored = ft_strjoin("", buf);
-	else
-	{
-		temp = stored;
-		stored = ft_strjoin(stored, buf);
-		free(temp);
-	}
-	return (stored);
-}
 
 static char	*read_and_stored(int fd, char *stored)
 {
@@ -68,14 +53,22 @@ static size_t	line_size(char *str)
 	return (line_len);
 }
 
-char	*get_next_line(int fd)
+static char	**get_stored_array(void)
 {
 	static char	*stored[1024];
+
+	return (stored);
+}
+
+char	*get_next_line(int fd)
+{
+	char		**stored;
 	char		*line;
 	char		*temp;
 	size_t		line_len;
 	size_t		substr_len;
 
+	stored = get_stored_array();
 	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stored[fd] = read_and_stored(fd, stored[fd]);
@@ -92,4 +85,22 @@ char	*get_next_line(int fd)
 	stored[fd] = ft_substr(stored[fd], line_len, substr_len);
 	free(temp);
 	return (line);
+}
+
+void	gnl_clear_all_fds(void)
+{
+	char	**stored;
+	int		fd;
+
+	stored = get_stored_array();
+	fd = 0;
+	while (fd < 1024)
+	{
+		if (stored[fd])
+		{
+			free(stored[fd]);
+			stored[fd] = NULL;
+		}
+		fd++;
+	}
 }

@@ -41,7 +41,8 @@ SRCS	=	ft_atoi.c\
 			ft_tolower.c\
 			ft_toupper.c\
 			get_next_line_bonus.c \
-			get_next_line.c
+			get_next_line.c\
+			get_next_line_utils.c
 
 BONUS_SRCS	=	ft_lstadd_front_bonus.c\
 				ft_lstlast_bonus.c\
