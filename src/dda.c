@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dda.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 10:51:07 by ekeller-          #+#    #+#             */
-/*   Updated: 2025/10/25 16:57:04 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/07 16:44:56 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ static void	define_side_step(t_ray *r, double px, double py)
 	}
 }
 
-//cam_x set pixel columns between -1 and 1. 
+//cam_x set pixel columns between -1 and 1.
+//- set_delta calculates the distance to reach the next gridline
+//- define_side_step: step defines grid traversal direction and
+// side stores the cumulative distance from player till the next grid line. 
 void	ray_setup(t_game *e, t_ray *r, int x)
 {
 	double	cam_x;
@@ -80,7 +83,8 @@ void	ray_setup(t_game *e, t_ray *r, int x)
 }
 
 /* ---------- step through grid (DDA) ----------------------------------- */
-
+//advances to the next grid line using the shortest route(moving in
+//x or y direction),  
 void	ray_dda(t_game *e, t_ray *r)
 {
 	while (r->hit == 0)

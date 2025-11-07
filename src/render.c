@@ -6,12 +6,13 @@
 /*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 11:19:46 by ekeller-@st       #+#    #+#             */
-/*   Updated: 2025/11/06 11:19:48 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/11/07 17:47:28 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
+//compute the perpendicular distance from player to wall.
 static void	compute_dist(t_game *e, t_ray *r)
 {
 	double	px;
@@ -25,6 +26,8 @@ static void	compute_dist(t_game *e, t_ray *r)
 		r->dist = (r->mapy - py + (1 - r->step_y) / 2.0) / r->dir_y;
 }
 
+//calculate start and end positions of the 3d wall and its height,
+//fitting it in the screen boundaries. 
 static void	compute_column_bounds(t_ray *r, t_drawcol *d)
 {
 	d->line_h = (HEIGHT / r->dist);
@@ -47,6 +50,8 @@ static double	wall_x_coord(t_game *e, t_ray *r)
 	return (wx - floor(wx));
 }
 
+//Selects the appropriate wall texture based on which face was
+//hit and calculates texture mapping parameters.
 static void	prep_tex_params(t_game *e, t_ray *r, t_drawcol *d, t_texture **tx)
 {
 	double	wx;
