@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acesar-m <acesar-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 16:37:52 by acesar-m          #+#    #+#             */
-/*   Updated: 2025/10/25 17:08:52 by acesar-m         ###   ########.fr       */
+/*   Updated: 2025/11/07 14:04:46 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_error("Use: ./cub3d <caminho/para/arquivo.cub>");
+		ft_error("Use: ./cub3d <path/to/file.cub>");
 		return (1);
 	}
 	check_file_extension(argv[1]);
